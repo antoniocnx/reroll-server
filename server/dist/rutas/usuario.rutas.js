@@ -13,3 +13,4 @@ usuarioRutas.post('/update', autenticacion_1.verificaToken, usuario_controlador_
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
 // usuarioRutas.get('/:id/favoritos', usuarioControlador.prototype.favoritos);
 exports.default = usuarioRutas;
+//# sourceMappingURL=usuario.rutas.js.map

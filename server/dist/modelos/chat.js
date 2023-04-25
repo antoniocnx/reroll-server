@@ -51,3 +51,4 @@ const chatSchema = new mongoose_1.default.Schema({
 });
 exports.Chat = (0, mongoose_1.model)('Chat', chatSchema);
 // module.exports = mongoose.model('Chat', chatSchema);
+//# sourceMappingURL=chat.js.map

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { IUsuario, Usuario } from "../modelos/usuario";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import Token from '../clases/token';
 // import { Direccion } from "../interfaces/direccion";
 
@@ -22,7 +22,7 @@ class usuarioControlador {
             nombre   : req.body.nombre,
             apellidos   : req.body.apellidos,
             email    : req.body.email,
-            password : bcrypt.hashSync(req.body.password, 10),
+            password : bcryptjs.hashSync(req.body.password, 10),
             nacimiento   : req.body.nacimiento,
             sexo   : req.body.sexo,
             direccion   : req.body.direccion,

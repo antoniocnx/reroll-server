@@ -106,3 +106,4 @@ class chatControlador {
     ;
 }
 exports.default = chatControlador;
+//# sourceMappingURL=chat.controlador.js.map

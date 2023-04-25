@@ -167,3 +167,4 @@ usuarioSchema.method('compararPassword', function (pwd = '') {
 //     compararPassword(password: string): boolean;
 // }
 exports.Usuario = (0, mongoose_1.model)('Usuario', usuarioSchema);
+//# sourceMappingURL=usuario.js.map

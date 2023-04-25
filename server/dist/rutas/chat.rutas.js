@@ -19,3 +19,4 @@ chatRutas.delete('/:chatId', chat_controlador_1.default.prototype.deleteChat);
 // Enviar un mensaje en un chat existente
 chatRutas.post('/:chatId', chat_controlador_1.default.prototype.enviarMensaje);
 exports.default = chatRutas;
+//# sourceMappingURL=chat.rutas.js.map

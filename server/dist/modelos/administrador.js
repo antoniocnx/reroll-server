@@ -66,3 +66,4 @@ administradorSchema.method('compararPassword', function (pwd = '') {
     }
 });
 exports.Administrador = (0, mongoose_1.model)('Administrador', administradorSchema);
+//# sourceMappingURL=administrador.js.map

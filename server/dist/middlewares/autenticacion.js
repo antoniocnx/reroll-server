@@ -80,3 +80,4 @@ const verificaTokenAdmin = (req, res, next) => {
     });
 };
 exports.verificaTokenAdmin = verificaTokenAdmin;
+//# sourceMappingURL=autenticacion.js.map

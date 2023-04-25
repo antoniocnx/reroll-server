@@ -27,3 +27,4 @@ class TokenAdmin {
 exports.default = TokenAdmin;
 TokenAdmin.seed = 'este-es-el-seed-de-mi-app-secreto';
 TokenAdmin.caducidad = '30d';
+//# sourceMappingURL=token-admin.js.map

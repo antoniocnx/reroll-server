@@ -138,3 +138,4 @@ class articuloControlador {
     }
 }
 exports.default = articuloControlador;
+//# sourceMappingURL=articulo.controlador.js.map

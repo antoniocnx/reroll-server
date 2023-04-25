@@ -14,3 +14,4 @@ articuloRutas.post('/upload', autenticacion_1.verificaToken, articulo_controlado
 articuloRutas.get('/imagen/:userid/:img', articulo_controlador_1.default.prototype.getImg);
 articuloRutas.delete('/delete/:articulo_id', autenticacion_1.verificaToken, articulo_controlador_1.default.prototype.delete);
 exports.default = articuloRutas;
+//# sourceMappingURL=articulo.rutas.js.map

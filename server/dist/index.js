@@ -54,3 +54,4 @@ mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.
 servidor.start(() => {
     console.log('Servidor iniciado en el puerto ' + servidor.port);
 });
+//# sourceMappingURL=index.js.map

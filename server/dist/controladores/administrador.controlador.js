@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const administrador_1 = require("../modelos/administrador");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_admin_1 = __importDefault(require("../clases/token-admin"));
 class administradorControlador {
     get(req, res) {
@@ -20,7 +20,7 @@ class administradorControlador {
             nombre: req.body.nombre,
             apellidos: req.body.apellidos,
             email: req.body.email,
-            password: bcrypt_1.default.hashSync(req.body.password, 10),
+            password: bcryptjs_1.default.hashSync(req.body.password, 10),
             nacimiento: req.body.nacimiento,
             sexo: req.body.sexo,
             direccion: req.body.direccion,
@@ -147,3 +147,4 @@ class administradorControlador {
     ;
 }
 exports.default = administradorControlador;
+//# sourceMappingURL=administrador.controlador.js.map

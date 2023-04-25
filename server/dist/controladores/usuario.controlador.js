@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const usuario_1 = require("../modelos/usuario");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../clases/token"));
 // import { Direccion } from "../interfaces/direccion";
 class usuarioControlador {
@@ -21,7 +21,7 @@ class usuarioControlador {
             nombre: req.body.nombre,
             apellidos: req.body.apellidos,
             email: req.body.email,
-            password: bcrypt_1.default.hashSync(req.body.password, 10),
+            password: bcryptjs_1.default.hashSync(req.body.password, 10),
             nacimiento: req.body.nacimiento,
             sexo: req.body.sexo,
             direccion: req.body.direccion,
@@ -152,3 +152,4 @@ class usuarioControlador {
     ;
 }
 exports.default = usuarioControlador;
+//# sourceMappingURL=usuario.controlador.js.map

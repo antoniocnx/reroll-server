@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { IAdministrador, Administrador } from "../modelos/administrador";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import TokenAdmin from '../clases/token-admin';
 
 class administradorControlador {
@@ -21,7 +21,7 @@ class administradorControlador {
             nombre   : req.body.nombre,
             apellidos   : req.body.apellidos,
             email    : req.body.email,
-            password : bcrypt.hashSync(req.body.password, 10),
+            password : bcryptjs.hashSync(req.body.password, 10),
             nacimiento   : req.body.nacimiento,
             sexo   : req.body.sexo,
             direccion   : req.body.direccion,

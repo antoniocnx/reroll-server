@@ -12,3 +12,4 @@ administradorRutas.post('/create', administrador_controlador_1.default.prototype
 administradorRutas.post('/update', autenticacion_1.verificaTokenAdmin, administrador_controlador_1.default.prototype.update);
 administradorRutas.post('/login', administrador_controlador_1.default.prototype.login);
 exports.default = administradorRutas;
+//# sourceMappingURL=administrador.rutas.js.map

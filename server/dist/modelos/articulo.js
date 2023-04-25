@@ -56,3 +56,4 @@ articuloSchema.pre('save', function (next) {
     next();
 });
 exports.Articulo = (0, mongoose_1.model)('Articulo', articuloSchema);
+//# sourceMappingURL=articulo.js.map
