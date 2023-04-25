@@ -1,5 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 const administradorSchema = new Schema({
     nombre: {
@@ -54,7 +54,7 @@ const administradorSchema = new Schema({
 });
 
 administradorSchema.method('compararPassword', function(pwd: string = ''): boolean {
-    if(bcrypt.compareSync(pwd, this.password)) {
+    if(bcryptjs.compareSync(pwd, this.password)) {
         return true;
     } else {
         return false;

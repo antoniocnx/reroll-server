@@ -1,5 +1,5 @@
 import mongoose, { Schema, model, Document } from "mongoose";
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { Direccion } from '../interfaces/direccion';
 import { Articulo } from "./articulo";
 
@@ -117,7 +117,7 @@ const usuarioSchema = new Schema({
 // });
 
 usuarioSchema.method('compararPassword', function(pwd: string = ''): boolean {
-    if(bcrypt.compareSync(pwd, this.password)) {
+    if(bcryptjs.compareSync(pwd, this.password)) {
         return true;
     } else {
         return false;
