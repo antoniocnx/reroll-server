@@ -50,7 +50,7 @@ servidor.app.use('/chats', chatRutas);
 //     }
 // })
 
-mongoose.connect('mongodb+srv://antoniocn:h9jRJlBO14uSV3fg@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
+mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
     if (err) {
         throw err;
     } else {

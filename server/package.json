@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "tsc && node dist/index.js"
   },
   "author": "Antonio",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.17.15",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/mongoose": "^5.11.97",
@@ -27,6 +28,7 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/express": "^4.17.15",
     "@types/express-fileupload": "^1.4.1",
     "@types/jsonwebtoken": "^9.0.1",

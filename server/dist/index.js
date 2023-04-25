@@ -42,7 +42,7 @@ servidor.app.use('/chats', chat_rutas_1.default);
 //         console.log("Base de Datos ONLINE");
 //     }
 // })
-mongoose_1.default.connect('mongodb+srv://antoniocn:JaredLeto1994@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
+mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
     if (err) {
         throw err;
     }
