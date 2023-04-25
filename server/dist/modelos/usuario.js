@@ -28,7 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Usuario = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const usuarioSchema = new mongoose_1.Schema({
     nombre: {
         type: String,
@@ -141,7 +141,7 @@ const usuarioSchema = new mongoose_1.Schema({
 //     }
 // });
 usuarioSchema.method('compararPassword', function (pwd = '') {
-    if (bcrypt_1.default.compareSync(pwd, this.password)) {
+    if (bcryptjs_1.default.compareSync(pwd, this.password)) {
         return true;
     }
     else {

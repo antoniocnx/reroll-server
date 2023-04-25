@@ -24,8 +24,8 @@ servidor.app.use(bodyParser.urlencoded({limit:'5mb', extended: true}));
 servidor.app.use(bodyParser.json({limit:'5mb'}));
 
 // Variables de entorno
-dotenv.config();
-const PORT = process.env.PORT || 5000;
+// dotenv.config();
+// export const PORT = process.env.PORT || 5000;
 
 // FileUpload
 servidor.app.use( fileUpload({ useTempFiles: true }) );

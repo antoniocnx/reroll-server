@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = require("./clases/server");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const usuario_rutas_1 = __importDefault(require("./rutas/usuario.rutas"));
@@ -21,8 +20,8 @@ moment_timezone_1.default.tz.setDefault('Europe/Madrid');
 servidor.app.use(body_parser_1.default.urlencoded({ limit: '5mb', extended: true }));
 servidor.app.use(body_parser_1.default.json({ limit: '5mb' }));
 // Variables de entorno
-dotenv_1.default.config();
-const PORT = process.env.PORT || 5000;
+// dotenv.config();
+// export const PORT = process.env.PORT || 5000;
 // FileUpload
 servidor.app.use((0, express_fileupload_1.default)({ useTempFiles: true }));
 servidor.app.use((0, cors_1.default)({
