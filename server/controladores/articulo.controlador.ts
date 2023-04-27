@@ -36,23 +36,26 @@ class articuloControlador {
 
     // Obtener un artículo por su id
     async getById(req: any, res: Response) {
-      const id = req.params._id;
+      const articuloId = req.params._id;
     
       try {
-        const articulo = await Articulo.findById(id).populate('usuario', '-password').exec();
+        const articulo = await Articulo.findById(articuloId)
+          .populate('usuario', '-password')
+          .exec();
+    
         res.json({
           ok: true,
           articulo
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({
           ok: false,
-          mensaje: 'Error al obtener el artículo',
-          errors: error
+          mensaje: 'Error al obtener el artículo'
         });
       }
     }
+    
     
 
     // Crear artículos
