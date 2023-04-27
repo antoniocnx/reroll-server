@@ -36,25 +36,36 @@ class articuloControlador {
 
     // Obtener un artículo por su id
     async getById(req: any, res: Response) {
-      const articuloId = req.params._id;
+      const articuloId = req.params.id;
+      console.log(`ID del artículo: ${articuloId}`);
     
       try {
         const articulo = await Articulo.findById(articuloId)
           .populate('usuario', '-password')
           .exec();
+        console.log('Artículo encontrado:', articulo);
+    
+        if (!articulo) {
+          return res.status(404).json({
+            ok: false,
+            mensaje: 'Artículo no encontrado'
+          });
+        }
     
         res.json({
           ok: true,
           articulo
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
         res.status(500).json({
           ok: false,
-          mensaje: 'Error al obtener el artículo'
+          mensaje: 'Error al obtener el artículo',
+          error: error.message
         });
       }
     }
+    
     
     
 
