@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import express from 'express';
 import { verificaToken } from '../middlewares/autenticacion';
 import { Articulo } from '../modelos/articulo';
 import { FileUpload } from '../interfaces/file-upload';
@@ -32,6 +33,48 @@ class articuloControlador {
         });
 
     };
+
+    // Obtener un artículo por su id
+    async getById(req: express.Request, res: express.Response) {
+      try {
+        const articuloId = req.params._id;
+        const articulo = await Articulo.findById(articuloId).populate('usuario', '-password').exec();
+    
+        if (!articulo) {
+          return res.status(404).json({ mensaje: 'No se encontró ningún artículo con ese ID' });
+        }
+    
+        res.json({
+          ok: true,
+          articulo
+        });
+      } catch (error: any) {
+        console.error(error.message);
+        res.status(500).send('Error del servidor');
+      }
+    }
+    
+    
+
+    // async getById(req: any, res: Response) {
+    //   const id = req.params._id;
+    
+    //   try {
+    //     const articulo = await Articulo.findById(id).populate('usuario', '-password').exec();
+    //     res.json({
+    //       ok: true,
+    //       articulo
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     res.status(500).json({
+    //       ok: false,
+    //       mensaje: 'Error al obtener el artículo',
+    //       errors: error
+    //     });
+    //   }
+    // }
+    
 
     // Crear artículos
     post(req: any, res: Response) {

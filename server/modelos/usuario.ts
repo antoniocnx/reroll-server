@@ -77,21 +77,10 @@ const usuarioSchema = new Schema({
 //         type: String,
 //         required: [true, 'Por favor, indique la contraseña']
 //     },
-//     direccion: {
+//     direccion: [{
 //         calle: {
 //             type: String,
 //             required: [true, 'Por favor, indique la calle']
-//           },
-//           numero: {
-//             type: Number,
-//             required: [true, 'Por favor, indique el número de calle']
-//           },
-//           adicional: {
-//             type: String 
-//           },
-//           cp: {
-//             type: Number,
-//             required: [true, 'Por favor, indique el código postal']
 //           },
 //           provincia: {
 //             type: String,
@@ -100,8 +89,16 @@ const usuarioSchema = new Schema({
 //           localidad: {
 //             type: String,
 //             required: [true, 'Por favor, indique la localidad']
+//           },
+//           pais: {
+//             type: String,
+//             required: [true, 'Por favor, indique el país']
+//           },
+//           cp: {
+//             type: Number,
+//             required: [true, 'Por favor, indique el código postal']
 //           }
-//     },
+//     }],
 //     nacimiento: {
 //         type: Date,
 //         required: [true, 'Por favor, indique la fecha de nacimiento']
@@ -110,6 +107,10 @@ const usuarioSchema = new Schema({
 //         type: String,
 //         required: [true, 'Por favor, indique el sexo']
 //     },
+//     favoritos: [{
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'Articulo' //'Favorito'
+//     }],
 //     avatar: {
 //         type: String,
 //         default: 'av-luffy.png'
@@ -147,16 +148,16 @@ export interface IUsuario extends Document {
 //     apellidos: string,
 //     email: string,
 //     password: string,
-//     direccion: {
-//         calle: string,
-//         numero: Number,
-//         adicional?: string,
-//         cp: Number,
-//         provincia: string,
-//         localidad: string
-//     },
 //     nacimiento: Date,
 //     sexo: string,
+//     direccion: [{
+//         calle: string,
+//         provincia: string,
+//         localidad: string
+//         pais: string,
+//         cp: Number,
+//     }],
+//     favoritos: typeof Articulo[], // 'Favorito[]'
 //     avatar: string,
 
 //     compararPassword(password: string): boolean;
