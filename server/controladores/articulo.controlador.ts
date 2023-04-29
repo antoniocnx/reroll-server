@@ -87,7 +87,7 @@ class articuloControlador {
 
   };
 
-  // Servicio para modificar los artículos
+  // Servicio para modificar artículos
   async update(req: any, res: Response) {
     const id = req.params.id;
     const userId = req.usuario._id;
