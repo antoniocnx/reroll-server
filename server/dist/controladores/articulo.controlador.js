@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const articulo_1 = require("../modelos/articulo");
 const file_system_1 = __importDefault(require("../clases/file-system"));
-const usuario_1 = require("../modelos/usuario");
 const fileSystem = new file_system_1.default();
 class articuloControlador {
     // Obtener artículos paginados
@@ -37,6 +36,34 @@ class articuloControlador {
         });
     }
     ;
+    // Obtener un artículo por su id
+    getById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const articuloId = req.params.id;
+            try {
+                const articulo = yield articulo_1.Articulo.findById(articuloId)
+                    .populate('usuario', '-password')
+                    .exec();
+                if (!articulo) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: 'Artículo no encontrado'
+                    });
+                }
+                res.json({
+                    ok: true,
+                    articulo
+                });
+            }
+            catch (error) {
+                res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al obtener el artículo',
+                    error: error.message
+                });
+            }
+        });
+    }
     // Crear artículos
     post(req, res) {
         const usuarioId = req.usuario._id;
@@ -46,11 +73,6 @@ class articuloControlador {
         body.galeria = imagenes;
         articulo_1.Articulo.create(body).then((articuloDB) => __awaiter(this, void 0, void 0, function* () {
             yield articuloDB.populate('usuario', '-password');
-            const usuario = yield usuario_1.Usuario.findById(usuarioId);
-            if (usuario && ('favorito' in body) && body.favorito) {
-                usuario.favoritos.push(articuloDB._id);
-                yield usuario.save();
-            }
             res.json({
                 ok: true,
                 articulo: articuloDB
@@ -63,16 +85,53 @@ class articuloControlador {
     // Servicio para modificar artículos
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const articuloId = req.params.articulo_id;
-            const update = req.body;
+            const id = req.params.id;
+            const userId = req.usuario._id;
+            const { nombre, precio, categoria, descripcion, localizacion, estado, envio, favorito, galeria } = req.body;
             try {
-                const articulo = yield articulo_1.Articulo.findByIdAndUpdate(articuloId, update, { new: true });
-                res.json({ success: true, articulo });
+                const articulo = yield articulo_1.Articulo.findById(id);
+                if (!articulo) {
+                    return res.status(404).json({
+                        ok: false,
+                        mensaje: 'No existe ningún artículo con ese id',
+                    });
+                }
+                if (articulo.usuario.toString() !== userId) {
+                    return res.status(403).json({
+                        ok: false,
+                        mensaje: 'No tienes permisos para actualizar este artículo',
+                    });
+                }
+                if (nombre)
+                    articulo.nombre = nombre;
+                if (precio)
+                    articulo.precio = precio;
+                if (categoria)
+                    articulo.categoria = categoria;
+                if (descripcion)
+                    articulo.descripcion = descripcion;
+                if (localizacion)
+                    articulo.localizacion = localizacion;
+                if (estado)
+                    articulo.estado = estado;
+                if (envio)
+                    articulo.envio = envio;
+                if (favorito)
+                    articulo.favorito = favorito;
+                if (galeria)
+                    articulo.galeria = galeria;
+                const articuloActualizado = yield articulo.save();
+                res.json({
+                    ok: true,
+                    mensaje: 'Artículo actualizado correctamente',
+                    articulo: articuloActualizado,
+                });
             }
             catch (error) {
+                console.log(error);
                 res.status(500).json({
-                    success: false,
-                    error: error.message
+                    ok: false,
+                    mensaje: 'Error en el servidor',
                 });
             }
         });

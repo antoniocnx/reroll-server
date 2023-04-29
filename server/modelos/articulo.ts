@@ -2,7 +2,6 @@
 import { Schema, Document, model } from 'mongoose';
 
 const articuloSchema = new Schema({
-
     // Fecha de creación
     fecha: {
         type: Date

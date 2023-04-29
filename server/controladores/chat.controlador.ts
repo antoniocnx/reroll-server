@@ -5,32 +5,32 @@ import { Usuario } from "../modelos/usuario";
 
 class chatControlador {
 
-    // Obtener todos los chats del usuario con sus mensajes
-    async getChats(req: Request, res: Response) {
-        try {
-        const chats = await Chat.find({ participantes: req.params.userId })
-                                .populate('participantes', '_id nombre email')
-                                .populate('mensajes.usuario', '_id nombre email')
-                                .sort({ fechaChat: -1 })
-                                .exec();
-        res.json(chats);
-        } catch (error) {
-        console.error(error);
-        res.status(500).send('Error al obtener los chats');
-        }
+  // Obtener todos los chats del usuario con sus mensajes
+  async getChats(req: Request, res: Response) {
+    try {
+      const chats = await Chat.find({ participantes: req.params.userId })
+        .populate('participantes', '_id nombre email')
+        .populate('mensajes.usuario', '_id nombre email')
+        .sort({ fechaChat: -1 })
+        .exec();
+      res.json(chats);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al obtener los chats');
+    }
   };
-  
+
   // Crear un nuevo chat con otro usuario
   async createChat(req: any, res: Response) {
     const token1 = req.get('x-token');
     const token2 = req.get('x-token-2');
-    
+
     // const user1 = await Usuario.findOne({ token: token1 });
     // const user2 = await Usuario.findOne({ token: token2 });
 
     const user1 = await Usuario.findOne({ _id: 'token1' });
     const user2 = await Usuario.findOne({ _id: 'token2' });
-    
+
     if (!user1 || !user2) {
       return res.status(400).json({ ok: false, mensaje: 'Usuarios no encontrados' });
     }
@@ -38,7 +38,7 @@ class chatControlador {
     if (user1._id.equals(user2._id)) {
       return res.status(400).json({ ok: false, mensaje: 'Los usuarios deben ser diferentes', user1, user2 });
     }
-    
+
     // Crear el chat y guardar en la base de datos
     const nuevoChat = new Chat({
       participantes: [user1._id, user2._id],
@@ -47,14 +47,14 @@ class chatControlador {
     });
 
     if (req.body.mensajes) {
-        nuevoChat.mensajes.push(req.body.mensajes);
+      nuevoChat.mensajes.push(req.body.mensajes);
     }
-    
+
     await nuevoChat.save();
-    
-    return res.json({ ok: true, mensaje: 'Chat creado exitosamente', nuevoChat});
+
+    return res.json({ ok: true, mensaje: 'Chat creado exitosamente', nuevoChat });
   };
-  
+
   // Eliminar un chat
   async deleteChat(req: Request, res: Response) {
     try {
@@ -69,7 +69,7 @@ class chatControlador {
       res.status(500).send('Error al eliminar el chat');
     }
   };
-  
+
   // Enviar un mensaje en un chat existente
   async enviarMensaje(req: Request, res: Response) {
     const mensaje = {
