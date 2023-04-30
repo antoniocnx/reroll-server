@@ -11,6 +11,8 @@ usuarioRutas.get('/get', autenticacion_1.verificaToken, usuario_controlador_1.de
 usuarioRutas.post('/create', usuario_controlador_1.default.prototype.create);
 usuarioRutas.post('/update', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.update);
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
-// usuarioRutas.get('/:id/favoritos', usuarioControlador.prototype.favoritos);
+// WIP ARTÍCULO FAVORITOS
+usuarioRutas.post('/:id/favoritos/:articuloId', usuario_controlador_1.default.prototype.marcarFavorito);
+usuarioRutas.get('/:id/favoritos', usuario_controlador_1.default.prototype.getFavoritos);
 exports.default = usuarioRutas;
 //# sourceMappingURL=usuario.rutas.js.map

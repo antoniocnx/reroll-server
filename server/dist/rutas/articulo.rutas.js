@@ -14,5 +14,7 @@ articuloRutas.put('/:id', autenticacion_1.verificaToken, articulo_controlador_1.
 articuloRutas.delete('/delete/:articulo_id', autenticacion_1.verificaToken, articulo_controlador_1.default.prototype.delete);
 articuloRutas.post('/upload', autenticacion_1.verificaToken, articulo_controlador_1.default.prototype.upload);
 articuloRutas.get('/imagen/:userid/:img', articulo_controlador_1.default.prototype.getImg);
+// WIP FAVORITOS
+articuloRutas.post('/:id');
 exports.default = articuloRutas;
 //# sourceMappingURL=articulo.rutas.js.map

@@ -12,4 +12,7 @@ articuloRutas.delete('/delete/:articulo_id', verificaToken, articuloControlador.
 articuloRutas.post('/upload', verificaToken, articuloControlador.prototype.upload);
 articuloRutas.get('/imagen/:userid/:img', articuloControlador.prototype.getImg);
 
+// WIP FAVORITOS
+articuloRutas.post('/:id');
+
 export default articuloRutas;

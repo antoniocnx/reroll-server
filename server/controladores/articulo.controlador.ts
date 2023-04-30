@@ -61,9 +61,6 @@ class articuloControlador {
     }
   }
 
-
-
-
   // Crear artículos
   post(req: any, res: Response) {
     const usuarioId = req.usuario._id;
@@ -206,6 +203,23 @@ class articuloControlador {
       res.status(500).json({ success: false, error: error.message });
     }
   }
+
+  // Guardar el artículo en el array de favoritos del usuario
+  // app.post('/users/:userId/favorites/:articleId', async (req, res) => {
+  //   const { userId, articleId } = req.params;
+  
+  //   const user = await User.findById(userId);
+  //   const article = await Article.findById(articleId);
+  
+  //   if (!user || !article) {
+  //     return res.sendStatus(404);
+  //   }
+  
+  //   user.favorites.push(article);
+  //   await user.save();
+  
+  //   res.sendStatus(200);
+  // });
 
 
 }
