@@ -160,7 +160,6 @@ class usuarioControlador {
         });
     }
     ;
-    // WIP ARTÍCULO FAVORITOS
     // Marcar un artículo como favorito
     marcarFavorito(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -203,12 +202,34 @@ class usuarioControlador {
             }
         });
     }
-    // Obtener todos los artículos favoritos de un usuario
+    // Obtener todos los artículos favoritos de un usuario FUNCIONA
+    // async getFavoritos(req: Request, res: Response) {
+    //     const idUsuario = req.params.id;
+    //     try {
+    //         const usuario = await Usuario.findById(idUsuario).populate('favoritos').exec();
+    //         if (!usuario) {
+    //             return res.status(404).json({
+    //                 ok: false,
+    //                 mensaje: 'Usuario no encontrado',
+    //             });
+    //         }
+    //         res.json({
+    //             ok: true,
+    //             favoritos: usuario.favoritos,
+    //         });
+    //     } catch (error: any) {
+    //         res.status(500).json({
+    //             ok: false,
+    //             mensaje: 'Error al obtener los favoritos del usuario',
+    //             error: error.message,
+    //         });
+    //     }
+    // };
     getFavoritos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const idUsuario = req.params.id;
             try {
-                const usuario = yield usuario_1.Usuario.findById(idUsuario).populate('favoritos').exec();
+                const usuarioId = req.usuario._id;
+                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate('favoritos').exec();
                 if (!usuario) {
                     return res.status(404).json({
                         ok: false,

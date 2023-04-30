@@ -202,30 +202,54 @@ class usuarioControlador {
         }
     }
 
-    // Obtener todos los artículos favoritos de un usuario
-    async getFavoritos(req: Request, res: Response) {
-        const idUsuario = req.params.id;
+    // Obtener todos los artículos favoritos de un usuario FUNCIONA
 
+    // async getFavoritos(req: Request, res: Response) {
+    //     const idUsuario = req.params.id;
+
+    //     try {
+    //         const usuario = await Usuario.findById(idUsuario).populate('favoritos').exec();
+    //         if (!usuario) {
+    //             return res.status(404).json({
+    //                 ok: false,
+    //                 mensaje: 'Usuario no encontrado',
+    //             });
+    //         }
+    //         res.json({
+    //             ok: true,
+    //             favoritos: usuario.favoritos,
+    //         });
+    //     } catch (error: any) {
+    //         res.status(500).json({
+    //             ok: false,
+    //             mensaje: 'Error al obtener los favoritos del usuario',
+    //             error: error.message,
+    //         });
+    //     }
+    // };
+
+    async getFavoritos(req: any, res: Response) {
         try {
-            const usuario = await Usuario.findById(idUsuario).populate('favoritos').exec();
-            if (!usuario) {
-                return res.status(404).json({
-                    ok: false,
-                    mensaje: 'Usuario no encontrado',
-                });
-            }
-            res.json({
-                ok: true,
-                favoritos: usuario.favoritos,
+          const usuarioId = req.usuario._id;
+          const usuario = await Usuario.findById(usuarioId).populate('favoritos').exec();
+          if (!usuario) {
+            return res.status(404).json({
+              ok: false,
+              mensaje: 'Usuario no encontrado',
             });
+          }
+          res.json({
+            ok: true,
+            favoritos: usuario.favoritos,
+          });
         } catch (error: any) {
-            res.status(500).json({
-                ok: false,
-                mensaje: 'Error al obtener los favoritos del usuario',
-                error: error.message,
-            });
+          res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener los favoritos del usuario',
+            error: error.message,
+          });
         }
-    };
+      };
 
 
 }
