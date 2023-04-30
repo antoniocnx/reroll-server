@@ -157,78 +157,76 @@ class usuarioControlador {
         })
     };
 
-    // WIP ARTÍCULO FAVORITOS
-
     // Marcar un artículo como favorito
     async marcarFavorito(req: any, res: Response) {
         const usuarioId = req.params.id;
         const articuloId = req.params.articuloId;
-      
-        try {
-          const usuario = await Usuario.findById(usuarioId);
-          if (!usuario) {
-            return res.status(404).json({
-              ok: false,
-              mensaje: 'Usuario no encontrado'
-            });
-          }
-      
-          const articulo = await Articulo.findById(articuloId);
-          if (!articulo) {
-            return res.status(404).json({
-              ok: false,
-              mensaje: 'Artículo no encontrado'
-            });
-          }
-      
-          if (usuario.favoritos.includes(articulo._id)) {
-            return res.status(400).json({
-              ok: false,
-              mensaje: 'Artículo ya está en favoritos'
-            });
-          }
-      
-          usuario.favoritos.push(articulo._id);
-          await usuario.save();
-      
-          res.json({
-            ok: true,
-            mensaje: 'Artículo agregado a favoritos'
-          });
-        } catch (error: any) {
-          res.status(500).json({
-            ok: false,
-            mensaje: 'Error al marcar como favorito',
-            error: error.message
-          });
-        }
-      }
 
-      // Obtener todos los artículos favoritos de un usuario
-    async  getFavoritos(req: Request, res: Response) {
-        const idUsuario = req.params.id;
-      
         try {
-          const usuario = await Usuario.findById(idUsuario).populate('favoritos').exec();
-          if (!usuario) {
-            return res.status(404).json({
-              ok: false,
-              mensaje: 'Usuario no encontrado',
+            const usuario = await Usuario.findById(usuarioId);
+            if (!usuario) {
+                return res.status(404).json({
+                    ok: false,
+                    mensaje: 'Usuario no encontrado'
+                });
+            }
+
+            const articulo = await Articulo.findById(articuloId);
+            if (!articulo) {
+                return res.status(404).json({
+                    ok: false,
+                    mensaje: 'Artículo no encontrado'
+                });
+            }
+
+            if (usuario.favoritos.includes(articulo._id)) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'Artículo ya está en favoritos'
+                });
+            }
+
+            usuario.favoritos.push(articulo._id);
+            await usuario.save();
+
+            res.json({
+                ok: true,
+                mensaje: 'Artículo agregado a favoritos'
             });
-          }
-          res.json({
-            ok: true,
-            favoritos: usuario.favoritos,
-          });
         } catch (error: any) {
-          res.status(500).json({
-            ok: false,
-            mensaje: 'Error al obtener los favoritos del usuario',
-            error: error.message,
-          });
+            res.status(500).json({
+                ok: false,
+                mensaje: 'Error al marcar como favorito',
+                error: error.message
+            });
         }
-      };
-      
+    }
+
+    // Obtener todos los artículos favoritos de un usuario
+    async getFavoritos(req: Request, res: Response) {
+        const idUsuario = req.params.id;
+
+        try {
+            const usuario = await Usuario.findById(idUsuario).populate('favoritos').exec();
+            if (!usuario) {
+                return res.status(404).json({
+                    ok: false,
+                    mensaje: 'Usuario no encontrado',
+                });
+            }
+            res.json({
+                ok: true,
+                favoritos: usuario.favoritos,
+            });
+        } catch (error: any) {
+            res.status(500).json({
+                ok: false,
+                mensaje: 'Error al obtener los favoritos del usuario',
+                error: error.message,
+            });
+        }
+    };
+
 
 }
 
