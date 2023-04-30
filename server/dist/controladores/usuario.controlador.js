@@ -218,10 +218,21 @@ class usuarioControlador {
                         mensaje: 'Artículo no encontrado'
                     });
                 }
-                if (usuario.favoritos.includes(articulo._id)) {
-                    return res.status(400).json({
-                        ok: false,
-                        mensaje: 'Artículo ya está en favoritos'
+                // if (usuario.favoritos.includes(articulo._id)) {
+                //     usuario.favoritos.pull(articulo._id);
+                //     await usuario.save();
+                //     return res.status(400).json({
+                //         ok: false,
+                //         mensaje: 'Artículo eliminado de favoritos'
+                //     });
+                // }
+                const index = usuario.favoritos.indexOf(articulo._id);
+                if (index !== -1) {
+                    usuario.favoritos.splice(index, 1);
+                    yield usuario.save();
+                    return res.json({
+                        ok: true,
+                        mensaje: 'Artículo eliminado de favoritos'
                     });
                 }
                 usuario.favoritos.push(articulo._id);
