@@ -158,48 +158,92 @@ class usuarioControlador {
     };
 
     // Marcar un artículo como favorito
-    async marcarFavorito(req: any, res: Response) {
-        const usuarioId = req.params.id;
-        const articuloId = req.params.articuloId;
+    // async marcarFavorito(req: any, res: Response) {
+    //     const usuarioId = req.params.id;
+    //     const articuloId = req.params.articuloId;
 
+    //     try {
+    //         const usuario = await Usuario.findById(usuarioId);
+    //         if (!usuario) {
+    //             return res.status(404).json({
+    //                 ok: false,
+    //                 mensaje: 'Usuario no encontrado'
+    //             });
+    //         }
+
+    //         const articulo = await Articulo.findById(articuloId);
+    //         if (!articulo) {
+    //             return res.status(404).json({
+    //                 ok: false,
+    //                 mensaje: 'Artículo no encontrado'
+    //             });
+    //         }
+
+    //         if (usuario.favoritos.includes(articulo._id)) {
+    //             return res.status(400).json({
+    //                 ok: false,
+    //                 mensaje: 'Artículo ya está en favoritos'
+    //             });
+    //         }
+
+    //         usuario.favoritos.push(articulo._id);
+    //         await usuario.save();
+
+    //         res.json({
+    //             ok: true,
+    //             mensaje: 'Artículo agregado a favoritos'
+    //         });
+    //     } catch (error: any) {
+    //         res.status(500).json({
+    //             ok: false,
+    //             mensaje: 'Error al marcar como favorito',
+    //             error: error.message
+    //         });
+    //     }
+    // }
+
+    async marcarFavorito(req: any, res: Response) {
         try {
+            const usuarioId = req.usuario._id;
+            const articuloId = req.params.articuloId;
+        
             const usuario = await Usuario.findById(usuarioId);
             if (!usuario) {
-                return res.status(404).json({
-                    ok: false,
-                    mensaje: 'Usuario no encontrado'
-                });
+              return res.status(404).json({
+                ok: false,
+                mensaje: 'Usuario no encontrado'
+              });
             }
-
+        
             const articulo = await Articulo.findById(articuloId);
             if (!articulo) {
-                return res.status(404).json({
-                    ok: false,
-                    mensaje: 'Artículo no encontrado'
-                });
+              return res.status(404).json({
+                ok: false,
+                mensaje: 'Artículo no encontrado'
+              });
             }
-
+        
             if (usuario.favoritos.includes(articulo._id)) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'Artículo ya está en favoritos'
-                });
+              return res.status(400).json({
+                ok: false,
+                mensaje: 'Artículo ya está en favoritos'
+              });
             }
-
+        
             usuario.favoritos.push(articulo._id);
             await usuario.save();
-
+        
             res.json({
-                ok: true,
-                mensaje: 'Artículo agregado a favoritos'
+              ok: true,
+              mensaje: 'Artículo agregado a favoritos'
             });
-        } catch (error: any) {
+          } catch (error: any) {
             res.status(500).json({
-                ok: false,
-                mensaje: 'Error al marcar como favorito',
-                error: error.message
+              ok: false,
+              mensaje: 'Error al marcar como favorito',
+              error: error.message
             });
-        }
+          }
     }
 
     // Obtener todos los artículos favoritos de un usuario

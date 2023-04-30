@@ -8,7 +8,8 @@ usuarioRutas.get('/get', verificaToken, usuarioControlador.prototype.get);
 usuarioRutas.post('/create', usuarioControlador.prototype.create);
 usuarioRutas.post('/update', verificaToken, usuarioControlador.prototype.update);
 usuarioRutas.post('/login', usuarioControlador.prototype.login);
-usuarioRutas.post('/:id/favoritos/:articuloId', usuarioControlador.prototype.marcarFavorito);
 usuarioRutas.get('/favoritos', verificaToken, usuarioControlador.prototype.getFavoritos);
+// usuarioRutas.post('/:id/favoritos/:articuloId', usuarioControlador.prototype.marcarFavorito);
+usuarioRutas.post('/favoritos/:articuloId', verificaToken, usuarioControlador.prototype.marcarFavorito);
 
 export default usuarioRutas;
