@@ -9,7 +9,6 @@ usuarioRutas.post('/create', usuarioControlador.prototype.create);
 usuarioRutas.post('/update', verificaToken, usuarioControlador.prototype.update);
 usuarioRutas.post('/login', usuarioControlador.prototype.login);
 usuarioRutas.post('/:id/favoritos/:articuloId', usuarioControlador.prototype.marcarFavorito);
-// usuarioRutas.get('/:id/favoritos', usuarioControlador.prototype.getFavoritos);
 usuarioRutas.get('/favoritos', verificaToken, usuarioControlador.prototype.getFavoritos);
 
 export default usuarioRutas;
