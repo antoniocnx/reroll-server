@@ -2,8 +2,6 @@ import { Server } from "./clases/server";
 import mongoose from "mongoose";
 import cors from 'cors';
 
-import dotenv from "dotenv";
-
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 
@@ -23,10 +21,6 @@ moment.tz.setDefault('Europe/Madrid');
 servidor.app.use(bodyParser.urlencoded({limit:'5mb', extended: true}));
 servidor.app.use(bodyParser.json({limit:'5mb'}));
 
-// Variables de entorno
-// dotenv.config();
-// export const PORT = process.env.PORT || 5000;
-
 // FileUpload
 servidor.app.use( fileUpload({ useTempFiles: true }) );
 
@@ -42,14 +36,6 @@ servidor.app.use('/articulo', articuloRutas);
 servidor.app.use('/chats', chatRutas);
 
 //Conexión a la base de datos
-// mongoose.connect('mongodb://localhost:27017/rerolldb', (err) => {
-//     if (err) {
-//         throw err;
-//     } else {
-//         console.log("Base de Datos ONLINE");
-//     }
-// })
-
 mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
     if (err) {
         throw err;
@@ -58,6 +44,20 @@ mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mo
     }
 })
 
+// Socket.io
+servidor.io.on('connect', (socket) => {
+    console.log(`Usuario conectado: ${socket.id}`);
+    
+    // Manejo de eventos de socket.io
+    socket.on('evento', (data) => {
+        console.log(`Datos recibidos: ${data}`);
+    });
+    
+    // Desconexión del usuario
+    socket.on('disconnect', () => {
+        console.log(`Usuario desconectado: ${socket.id}`);
+    });
+});
 
 // Levanta express
 servidor.start(() => {
