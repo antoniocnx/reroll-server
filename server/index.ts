@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from 'cors';
 
 import bodyParser from "body-parser";
-import fileUpload from "express-fileupload";
 
 import usuarioRutas from "./rutas/usuario.rutas";
 import articuloRutas from "./rutas/articulo.rutas";
@@ -11,6 +10,7 @@ import administradorRutas from "./rutas/administrador.rutas";
 import chatRutas from "./rutas/chat.rutas";
 
 import moment from 'moment-timezone';
+import express from 'express';
 
 const servidor = new Server();
 
@@ -18,11 +18,13 @@ const servidor = new Server();
 moment.tz.setDefault('Europe/Madrid');
 
 // Body parser
-servidor.app.use(bodyParser.urlencoded({limit:'5mb', extended: true}));
-servidor.app.use(bodyParser.json({limit:'5mb'}));
+servidor.app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+servidor.app.use(bodyParser.json({ limit: '5mb' }));
 
-// FileUpload
-servidor.app.use( fileUpload({ useTempFiles: true }) );
+// PRUEBAS
+servidor.app.use(express.json());
+
+// CORS
 
 servidor.app.use(cors({
     origin: true,
@@ -47,12 +49,12 @@ mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mo
 // Socket.io
 servidor.io.on('connect', (socket) => {
     console.log(`Usuario conectado: ${socket.id}`);
-    
+
     // Manejo de eventos de socket.io
     socket.on('evento', (data) => {
         console.log(`Datos recibidos: ${data}`);
     });
-    
+
     // Desconexión del usuario
     socket.on('disconnect', () => {
         console.log(`Usuario desconectado: ${socket.id}`);

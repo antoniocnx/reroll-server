@@ -1,15 +1,8 @@
-import { Router, Response } from 'express';
-import express from 'express';
-import { verificaToken } from '../middlewares/autenticacion';
+import { Response, Request } from 'express';
 import { Articulo } from '../modelos/articulo';
-import { FileUpload } from '../interfaces/file-upload';
-import FileSystem from '../clases/file-system';
-import { Usuario } from '../modelos/usuario';
-
-const fileSystem = new FileSystem();
+import fs from 'fs';
 
 class articuloControlador {
-
 
   // Obtener artículos paginados
   async get(req: any, res: Response) {
@@ -62,27 +55,69 @@ class articuloControlador {
   }
 
   // Crear artículos
+  // post(req: any, res: Response) {
+  //   const usuarioId = req.usuario._id;
+  //   const body = req.body;
+  //   body.usuario = usuarioId;
+
+  //   const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
+  //   body.galeria = imagenes;
+
+  //   Articulo.create(body).then(async articuloDB => {
+  //     await articuloDB.populate('usuario', '-password');
+
+  //     res.json({
+  //       ok: true,
+  //       articulo: articuloDB
+  //     });
+
+  //   }).catch(err => {
+  //     res.json(err)
+  //   });
+
+  // };
+
+  // async prueba(req: Request, res: Response) {
+  //   const file = req.file;
+  //   if(!file) {
+  //     return res.status(400).json({
+  //       message: 'No file'
+  //     });
+  //   }
+
+  //   res.status(200).json({
+  //     message: 'Archivo recibido',
+  //     data: file
+  //   })
+  // }
+
+  prueba(req: Request, res: Response) {
+    res.send('Archivo subido con éxito');
+  }
+
   post(req: any, res: Response) {
     const usuarioId = req.usuario._id;
     const body = req.body;
     body.usuario = usuarioId;
 
-    const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
-    body.galeria = imagenes;
+    const galeria = req.files.map((file: any) => file.originalname);
+    body.galeria = galeria;
 
-    Articulo.create(body).then(async articuloDB => {
-      await articuloDB.populate('usuario', '-password');
-
-      res.json({
-        ok: true,
-        articulo: articuloDB
+  
+    Articulo.create(body)
+      .then(async (articuloDB) => {
+        await articuloDB.populate('usuario', '-password');
+  
+        res.json({
+          ok: true,
+          articulo: articuloDB,
+        });
+      })
+      .catch((err) => {
+        res.json(err);
       });
-
-    }).catch(err => {
-      res.json(err)
-    });
-
-  };
+  }
+  
 
   // Servicio para modificar artículos
   async update(req: any, res: Response) {
@@ -134,53 +169,6 @@ class articuloControlador {
     }
   };
 
-  // Servicio para subir archivos
-  async upload(req: any, res: Response) {
-
-    if (!req.files) {
-      return res.status(400).json({
-        ok: false,
-        mensaje: 'No se subió ningun archivo'
-      });
-    }
-
-    const file: FileUpload = req.files.image;
-
-    if (!file) {
-      return res.status(400).json({
-        ok: false,
-        mensaje: 'No se subió ningun archivo - image'
-      });
-    }
-
-    if (!file.mimetype.includes('imagen')) {
-      return res.status(400).json({
-        ok: false,
-        mensaje: 'Lo que subió no es una imagen'
-      });
-    }
-
-    await fileSystem.guardarImagenTemporal(file, req.usuario._id);
-
-    res.json({
-      ok: true,
-      file: file.mimetype
-    });
-
-  };
-
-
-  // Obtener imagen por url
-  getImg(req: any, res: Response) {
-
-    const userId = req.params.userid;
-    const img = req.params.img;
-
-    const pathFoto = fileSystem.getFotoUrl(userId, img);
-
-    res.sendFile(pathFoto);
-
-  };
 
   // WIP
   // Elimnar post

@@ -7,23 +7,21 @@ const server_1 = require("./clases/server");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const usuario_rutas_1 = __importDefault(require("./rutas/usuario.rutas"));
 const articulo_rutas_1 = __importDefault(require("./rutas/articulo.rutas"));
 const administrador_rutas_1 = __importDefault(require("./rutas/administrador.rutas"));
 const chat_rutas_1 = __importDefault(require("./rutas/chat.rutas"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
+const express_1 = __importDefault(require("express"));
 const servidor = new server_1.Server();
 // Configuración de la zona horaria
 moment_timezone_1.default.tz.setDefault('Europe/Madrid');
 // Body parser
 servidor.app.use(body_parser_1.default.urlencoded({ limit: '5mb', extended: true }));
 servidor.app.use(body_parser_1.default.json({ limit: '5mb' }));
-// Variables de entorno
-// dotenv.config();
-// export const PORT = process.env.PORT || 5000;
-// FileUpload
-servidor.app.use((0, express_fileupload_1.default)({ useTempFiles: true }));
+// PRUEBAS
+servidor.app.use(express_1.default.json());
+// CORS
 servidor.app.use((0, cors_1.default)({
     origin: true,
     credentials: true
@@ -34,13 +32,6 @@ servidor.app.use('/administrador', administrador_rutas_1.default);
 servidor.app.use('/articulo', articulo_rutas_1.default);
 servidor.app.use('/chats', chat_rutas_1.default);
 //Conexión a la base de datos
-// mongoose.connect('mongodb://localhost:27017/rerolldb', (err) => {
-//     if (err) {
-//         throw err;
-//     } else {
-//         console.log("Base de Datos ONLINE");
-//     }
-// })
 mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
     if (err) {
         throw err;
@@ -48,6 +39,18 @@ mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.
     else {
         console.log("Base de Datos ONLINE");
     }
+});
+// Socket.io
+servidor.io.on('connect', (socket) => {
+    console.log(`Usuario conectado: ${socket.id}`);
+    // Manejo de eventos de socket.io
+    socket.on('evento', (data) => {
+        console.log(`Datos recibidos: ${data}`);
+    });
+    // Desconexión del usuario
+    socket.on('disconnect', () => {
+        console.log(`Usuario desconectado: ${socket.id}`);
+    });
 });
 // Levanta express
 servidor.start(() => {

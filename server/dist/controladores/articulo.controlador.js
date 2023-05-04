@@ -8,13 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const articulo_1 = require("../modelos/articulo");
-const file_system_1 = __importDefault(require("../clases/file-system"));
-const fileSystem = new file_system_1.default();
 class articuloControlador {
     // Obtener artículos paginados
     get(req, res) {
@@ -65,23 +60,55 @@ class articuloControlador {
         });
     }
     // Crear artículos
+    // post(req: any, res: Response) {
+    //   const usuarioId = req.usuario._id;
+    //   const body = req.body;
+    //   body.usuario = usuarioId;
+    //   const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
+    //   body.galeria = imagenes;
+    //   Articulo.create(body).then(async articuloDB => {
+    //     await articuloDB.populate('usuario', '-password');
+    //     res.json({
+    //       ok: true,
+    //       articulo: articuloDB
+    //     });
+    //   }).catch(err => {
+    //     res.json(err)
+    //   });
+    // };
+    // async prueba(req: Request, res: Response) {
+    //   const file = req.file;
+    //   if(!file) {
+    //     return res.status(400).json({
+    //       message: 'No file'
+    //     });
+    //   }
+    //   res.status(200).json({
+    //     message: 'Archivo recibido',
+    //     data: file
+    //   })
+    // }
+    prueba(req, res) {
+        res.send('Archivo subido con éxito');
+    }
     post(req, res) {
         const usuarioId = req.usuario._id;
         const body = req.body;
         body.usuario = usuarioId;
-        const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
-        body.galeria = imagenes;
-        articulo_1.Articulo.create(body).then((articuloDB) => __awaiter(this, void 0, void 0, function* () {
+        const galeria = req.files.map((file) => file.originalname);
+        body.galeria = galeria;
+        articulo_1.Articulo.create(body)
+            .then((articuloDB) => __awaiter(this, void 0, void 0, function* () {
             yield articuloDB.populate('usuario', '-password');
             res.json({
                 ok: true,
-                articulo: articuloDB
+                articulo: articuloDB,
             });
-        })).catch(err => {
+        }))
+            .catch((err) => {
             res.json(err);
         });
     }
-    ;
     // Servicio para modificar artículos
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -135,44 +162,6 @@ class articuloControlador {
                 });
             }
         });
-    }
-    ;
-    // Servicio para subir archivos
-    upload(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!req.files) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'No se subió ningun archivo'
-                });
-            }
-            const file = req.files.image;
-            if (!file) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'No se subió ningun archivo - image'
-                });
-            }
-            if (!file.mimetype.includes('imagen')) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'Lo que subió no es una imagen'
-                });
-            }
-            yield fileSystem.guardarImagenTemporal(file, req.usuario._id);
-            res.json({
-                ok: true,
-                file: file.mimetype
-            });
-        });
-    }
-    ;
-    // Obtener imagen por url
-    getImg(req, res) {
-        const userId = req.params.userid;
-        const img = req.params.img;
-        const pathFoto = fileSystem.getFotoUrl(userId, img);
-        res.sendFile(pathFoto);
     }
     ;
     // WIP
