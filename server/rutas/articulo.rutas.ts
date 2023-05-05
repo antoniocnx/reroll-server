@@ -7,8 +7,6 @@ import { upload } from "../middlewares/multer";
 
 const articuloRutas = Router();
 
-articuloRutas.post('/prueba', upload.single('file'), articuloControlador.prototype.prueba);
-
 articuloRutas.get('/get', articuloControlador.prototype.get);
 articuloRutas.get('/:id', articuloControlador.prototype.getById);
 articuloRutas.post('/post', upload.array('files', 10), verificaToken, articuloControlador.prototype.post);

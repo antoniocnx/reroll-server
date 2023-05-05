@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import { Articulo } from '../modelos/articulo';
 import fs from 'fs';
+import { cloudinary } from '../clases/cloudinary';
 
 class articuloControlador {
 
@@ -55,55 +56,26 @@ class articuloControlador {
   }
 
   // Crear artículos
-  // post(req: any, res: Response) {
-  //   const usuarioId = req.usuario._id;
-  //   const body = req.body;
-  //   body.usuario = usuarioId;
-
-  //   const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
-  //   body.galeria = imagenes;
-
-  //   Articulo.create(body).then(async articuloDB => {
-  //     await articuloDB.populate('usuario', '-password');
-
-  //     res.json({
-  //       ok: true,
-  //       articulo: articuloDB
-  //     });
-
-  //   }).catch(err => {
-  //     res.json(err)
-  //   });
-
-  // };
-
-  // async prueba(req: Request, res: Response) {
-  //   const file = req.file;
-  //   if(!file) {
-  //     return res.status(400).json({
-  //       message: 'No file'
-  //     });
-  //   }
-
-  //   res.status(200).json({
-  //     message: 'Archivo recibido',
-  //     data: file
-  //   })
-  // }
-
-  prueba(req: Request, res: Response) {
-    res.send('Archivo subido con éxito');
-  }
-
-  post(req: any, res: Response) {
+  async post(req: any, res: Response) {
     const usuarioId = req.usuario._id;
     const body = req.body;
     body.usuario = usuarioId;
-
-    const galeria = req.files.map((file: any) => file.originalname);
-    body.galeria = galeria;
-
-  
+    
+    const galeria = req.files.map((file: any) => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      });
+    });
+    
+    body.galeria = await Promise.all(galeria);
+    
+    
     Articulo.create(body)
       .then(async (articuloDB) => {
         await articuloDB.populate('usuario', '-password');
@@ -116,9 +88,49 @@ class articuloControlador {
       .catch((err) => {
         res.json(err);
       });
-  }
+    }
   
-
+  // Crea artículos subiendo las imágenes al servidor en uploads/gallery
+  // post(req: any, res: Response) {
+  //   const usuarioId = req.usuario._id;
+  //   const body = req.body;
+  //   body.usuario = usuarioId;
+    
+  //   const galeria = req.files.map((file: any) => file.originalname);
+  //   body.galeria = galeria;
+    
+    
+  //   Articulo.create(body)
+  //     .then(async (articuloDB) => {
+  //       await articuloDB.populate('usuario', '-password');
+  
+  //       res.json({
+  //         ok: true,
+  //         articulo: articuloDB,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       res.json(err);
+  //     });
+  //   }
+    
+    // Crea artículos sin imágenes
+    // post(req: any, res: Response) {
+    //   const usuarioId = req.usuario._id;
+    //   const body = req.body;
+    //   body.usuario = usuarioId;
+  
+    //   const imagenes = fileSystem.imagenesDeTempHaciaArticulo(req.usuario._id);
+    //   body.galeria = imagenes;
+  
+    //   Articulo.create(body).then(async articuloDB => {
+    //     await articuloDB.populate('usuario', '-password');
+  
+    //     res.json({
+    //       ok: true,
+    //       articulo: articuloDB
+    //     });
+    
   // Servicio para modificar artículos
   async update(req: any, res: Response) {
     const id = req.params.id;

@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const articulo_1 = require("../modelos/articulo");
+const cloudinary_1 = require("../clases/cloudinary");
 class articuloControlador {
     // Obtener artículos paginados
     get(req, res) {
@@ -60,6 +61,57 @@ class articuloControlador {
         });
     }
     // Crear artículos
+    post(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuarioId = req.usuario._id;
+            const body = req.body;
+            body.usuario = usuarioId;
+            const galeria = req.files.map((file) => {
+                return new Promise((resolve, reject) => {
+                    cloudinary_1.cloudinary.uploader.upload(file.path, (err, result) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(result.secure_url);
+                        }
+                    });
+                });
+            });
+            body.galeria = yield Promise.all(galeria);
+            articulo_1.Articulo.create(body)
+                .then((articuloDB) => __awaiter(this, void 0, void 0, function* () {
+                yield articuloDB.populate('usuario', '-password');
+                res.json({
+                    ok: true,
+                    articulo: articuloDB,
+                });
+            }))
+                .catch((err) => {
+                res.json(err);
+            });
+        });
+    }
+    // Crea artículos subiendo las imágenes al servidor en uploads/gallery
+    // post(req: any, res: Response) {
+    //   const usuarioId = req.usuario._id;
+    //   const body = req.body;
+    //   body.usuario = usuarioId;
+    //   const galeria = req.files.map((file: any) => file.originalname);
+    //   body.galeria = galeria;
+    //   Articulo.create(body)
+    //     .then(async (articuloDB) => {
+    //       await articuloDB.populate('usuario', '-password');
+    //       res.json({
+    //         ok: true,
+    //         articulo: articuloDB,
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       res.json(err);
+    //     });
+    //   }
+    // Crea artículos sin imágenes
     // post(req: any, res: Response) {
     //   const usuarioId = req.usuario._id;
     //   const body = req.body;
@@ -72,43 +124,6 @@ class articuloControlador {
     //       ok: true,
     //       articulo: articuloDB
     //     });
-    //   }).catch(err => {
-    //     res.json(err)
-    //   });
-    // };
-    // async prueba(req: Request, res: Response) {
-    //   const file = req.file;
-    //   if(!file) {
-    //     return res.status(400).json({
-    //       message: 'No file'
-    //     });
-    //   }
-    //   res.status(200).json({
-    //     message: 'Archivo recibido',
-    //     data: file
-    //   })
-    // }
-    prueba(req, res) {
-        res.send('Archivo subido con éxito');
-    }
-    post(req, res) {
-        const usuarioId = req.usuario._id;
-        const body = req.body;
-        body.usuario = usuarioId;
-        const galeria = req.files.map((file) => file.originalname);
-        body.galeria = galeria;
-        articulo_1.Articulo.create(body)
-            .then((articuloDB) => __awaiter(this, void 0, void 0, function* () {
-            yield articuloDB.populate('usuario', '-password');
-            res.json({
-                ok: true,
-                articulo: articuloDB,
-            });
-        }))
-            .catch((err) => {
-            res.json(err);
-        });
-    }
     // Servicio para modificar artículos
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
