@@ -56,22 +56,28 @@ class articuloControlador {
   }
 
   // Crear artículos
-  async post(req, res) {
+
+  // FUNCIONA
+  async post(req: any, res: Response) {
     const usuarioId = req.usuario._id;
-    const body = JSON.parse(req.body.articulo);
+    const body = req.body;
     body.usuario = usuarioId;
-
-    const galeria = [];
-    if (req.files && req.files.length) {
-      for (let i = 0; i < req.files.length; i++) {
-        const file = req.files[i];
-        const result = await cloudinary.uploader.upload(file.path);
-        galeria.push(result.secure_url);
-      }
-    }
-
-    body.galeria = galeria;
-
+    
+    const galeria = req.files.map((file: any) => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      });
+    });
+    
+    body.galeria = await Promise.all(galeria);
+    
+    
     Articulo.create(body)
       .then(async (articuloDB) => {
         await articuloDB.populate('usuario', '-password');
@@ -84,51 +90,10 @@ class articuloControlador {
       .catch((err) => {
         res.json(err);
       });
-
-    //  body.galeria = galeria;
-    // const articuloDB = await (await Articulo.create(body)).populate('usuario', '-password');
-    // res.json({
-    //   ok: true,
-    //   articulo: articuloDB,
-    // });
-  }
-
-
-  // async post(req: any, res: Response) {
-  //   const usuarioId = req.usuario._id;
-  //   const body = req.body;
-  //   body.usuario = usuarioId;
-    
-  //   const galeria = req.files.map((file: any) => {
-  //     return new Promise((resolve, reject) => {
-  //       cloudinary.uploader.upload(file.path, (err, result) => {
-  //         if (err) {
-  //           reject(err);
-  //         } else {
-  //           resolve(result.secure_url);
-  //         }
-  //       });
-  //     });
-  //   });
-    
-  //   body.galeria = await Promise.all(galeria);
-    
-    
-  //   Articulo.create(body)
-  //     .then(async (articuloDB) => {
-  //       await articuloDB.populate('usuario', '-password');
-  
-  //       res.json({
-  //         ok: true,
-  //         articulo: articuloDB,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       res.json(err);
-  //     });
-  //   }
+    }
   
   // Crea artículos subiendo las imágenes al servidor en uploads/gallery
+  
   // post(req: any, res: Response) {
   //   const usuarioId = req.usuario._id;
   //   const body = req.body;
@@ -153,6 +118,7 @@ class articuloControlador {
   //   }
     
     // Crea artículos sin imágenes
+
     // post(req: any, res: Response) {
     //   const usuarioId = req.usuario._id;
     //   const body = req.body;
