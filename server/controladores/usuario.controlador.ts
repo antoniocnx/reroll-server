@@ -232,7 +232,7 @@ class usuarioControlador {
     async getValoraciones(req: any, res: Response) {
         try {
           const usuarioId = req.usuario._id;
-          const usuario = await Usuario.findById(usuarioId).populate('valoraciones').exec();
+          const usuario = await Usuario.findById(usuarioId).populate('valoracion').exec();
           if (!usuario) {
             return res.status(404).json({
               ok: false,

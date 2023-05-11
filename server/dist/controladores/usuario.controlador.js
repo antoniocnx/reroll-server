@@ -235,7 +235,7 @@ class usuarioControlador {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const usuarioId = req.usuario._id;
-                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate('valoraciones').exec();
+                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate('valoracion').exec();
                 if (!usuario) {
                     return res.status(404).json({
                         ok: false,
