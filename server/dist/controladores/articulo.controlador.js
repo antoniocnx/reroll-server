@@ -180,7 +180,6 @@ class articuloControlador {
         });
     }
     ;
-    // WIP
     // Elimnar post
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -188,7 +187,6 @@ class articuloControlador {
             const usuarioId = req.usuario._id;
             try {
                 const articulo = yield articulo_1.Articulo.findOne({ _id: articuloId, usuario: usuarioId });
-                // const articulo = await Articulo.findById(articuloId).where({ usuario: usuarioId });
                 if (!articulo) {
                     return res.status(404).json({ success: false, error: 'No se encontró el artículo' });
                 }

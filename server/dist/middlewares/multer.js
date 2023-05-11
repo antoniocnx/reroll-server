@@ -7,7 +7,7 @@ exports.upload = exports.storage = void 0;
 const multer_1 = __importDefault(require("multer"));
 // Configuración de almacenamiento
 exports.storage = multer_1.default.diskStorage({
-    destination: 'uploads/gallery',
+    // destination: 'uploads/gallery',
     filename: function (req, file, cb) {
         cb(null, file.originalname); // Especifica el nombre del archivo subido
     }

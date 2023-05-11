@@ -77,12 +77,24 @@ const usuarioSchema = new mongoose_1.Schema({
     },
     favoritos: [{
             type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: 'Articulo' //'Favorito'
+            ref: 'Articulo'
         }],
     avatar: {
         type: String,
         default: 'av-luffy.png'
-    }
+    },
+    valoracion: [{
+            usuario: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: 'Usuario'
+            },
+            puntuacion: {
+                type: Number
+            },
+            comentario: {
+                type: String
+            }
+        }]
 });
 // const usuarioSchema = new Schema({
 //     nombre: {
@@ -163,8 +175,8 @@ usuarioSchema.method('compararPassword', function (pwd = '') {
 //         pais: string,
 //         cp: Number,
 //     }],
-//     favoritos: typeof Articulo[], // 'Favorito[]'
-//     avatar: string,
+//     favoritos: typeof Articulo[],
+//     avatar: string
 //     compararPassword(password: string): boolean;
 // }
 exports.Usuario = (0, mongoose_1.model)('Usuario', usuarioSchema);

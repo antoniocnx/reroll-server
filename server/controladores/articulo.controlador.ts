@@ -77,7 +77,6 @@ class articuloControlador {
     
     body.galeria = await Promise.all(galeria);
     
-    
     Articulo.create(body)
       .then(async (articuloDB) => {
         await articuloDB.populate('usuario', '-password');
@@ -185,8 +184,6 @@ class articuloControlador {
     }
   };
 
-
-  // WIP
   // Elimnar post
   async delete(req: any, res: Response) {
     const articuloId = req.params.articulo_id;
@@ -194,8 +191,6 @@ class articuloControlador {
 
     try {
       const articulo = await Articulo.findOne({ _id: articuloId, usuario: usuarioId });
-      // const articulo = await Articulo.findById(articuloId).where({ usuario: usuarioId });
-
 
       if (!articulo) {
         return res.status(404).json({ success: false, error: 'No se encontró el artículo' });

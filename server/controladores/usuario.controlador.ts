@@ -31,7 +31,7 @@ class usuarioControlador {
             localidad: req.body.localidad,
             pais: req.body.pais,
             cp: req.body.cp,
-            favoritos: req.body.favoritos,
+            // favoritos: req.body.favoritos,
             avatar: req.body.avatar
         };
 
@@ -49,7 +49,7 @@ class usuarioControlador {
                 localidad: userDB.localidad,
                 pais: userDB.pais,
                 cp: userDB.cp,
-                favoritos: userDB.favoritos,
+                // favoritos: userDB.favoritos,
                 avatar: userDB.avatar
             });
 
@@ -228,6 +228,77 @@ class usuarioControlador {
           });
         }
     };
+
+    async getValoraciones(req: any, res: Response) {
+        try {
+          const usuarioId = req.usuario._id;
+          const usuario = await Usuario.findById(usuarioId).populate('valoraciones').exec();
+          if (!usuario) {
+            return res.status(404).json({
+              ok: false,
+              mensaje: 'Usuario no encontrado',
+            });
+          }
+          res.json({
+            ok: true,
+            valoraciones: usuario.valoracion,
+          });
+        } catch (error: any) {
+          res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener los favoritos del usuario',
+            error: error.message,
+          });
+        }
+    };
+
+    async valorar(req: any, res: Response) {
+        try {
+          const idUsuario = req.params.idUsuario;
+          const idUsuarioValorador = req.usuario._id;
+          const puntuacion = req.body.puntuacion;
+          const comentario = req.body.comentario;
+      
+          const usuario = await Usuario.findById(idUsuario);
+          if (!usuario) {
+            return res.status(404).json({
+              ok: false,
+              mensaje: 'Usuario no encontrado',
+            });
+          }
+      
+          const valoracionExistente = usuario.valoracion.find((val) => val.usuario.toString() === idUsuarioValorador);
+          if (valoracionExistente) {
+            return res.status(400).json({
+              ok: false,
+              mensaje: 'El usuario ya ha valorado a este usuario anteriormente',
+            });
+          }
+      
+          const valoracion = {
+            usuario: idUsuarioValorador,
+            puntuacion: puntuacion,
+            comentario: comentario,
+          };
+      
+          usuario.valoracion.push(valoracion);
+      
+          await usuario.save();
+      
+          res.json({
+            ok: true,
+            mensaje: 'Valoración añadida correctamente',
+          });
+      
+        } catch (error: any) {
+          res.status(500).json({
+            ok: false,
+            mensaje: 'Error al agregar valoración al usuario',
+            error: error.message,
+          });
+        }
+      };
+      
 
 
 }

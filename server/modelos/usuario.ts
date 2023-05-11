@@ -51,12 +51,24 @@ const usuarioSchema = new Schema({
     },
     favoritos: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Articulo' //'Favorito'
+        ref: 'Articulo'
     }],
     avatar: {
         type: String,
         default: 'av-luffy.png'
-    }
+    },
+    valoracion: [{
+        usuario: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Usuario'
+        },
+        puntuacion: {
+            type: Number
+        },
+        comentario: {
+            type: String
+        }
+    }]
 });
 
 // const usuarioSchema = new Schema({
@@ -137,8 +149,13 @@ export interface IUsuario extends Document {
     localidad: string,
     pais: string,
     cp: number,
-    favoritos: typeof Articulo[], // 'Favorito[]'
+    favoritos: typeof Articulo[],
     avatar: string,
+    valoracion: [{
+        usuario: typeof Usuario,
+        puntuacion: Number,
+        comentario: string
+    }]
 
     compararPassword(password: string): boolean;
 }
@@ -157,8 +174,8 @@ export interface IUsuario extends Document {
 //         pais: string,
 //         cp: Number,
 //     }],
-//     favoritos: typeof Articulo[], // 'Favorito[]'
-//     avatar: string,
+//     favoritos: typeof Articulo[],
+//     avatar: string
 
 //     compararPassword(password: string): boolean;
 // }
