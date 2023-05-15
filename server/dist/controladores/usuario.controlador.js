@@ -260,7 +260,7 @@ class usuarioControlador {
         return __awaiter(this, void 0, void 0, function* () {
             const usuarioId = req.params.id;
             try {
-                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate('valoracion').exec();
+                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate({ path: 'valoracion.usuario', model: 'Usuario' }).exec(); //.populate('valoracion')
                 if (!usuario) {
                     return res.status(404).json({
                         ok: false,

@@ -256,7 +256,7 @@ class usuarioControlador {
   async getValoraciones(req: any, res: Response) {
     const usuarioId = req.params.id;
     try {
-      const usuario = await Usuario.findById(usuarioId).populate('valoracion').exec();
+      const usuario = await Usuario.findById(usuarioId).populate({ path: 'valoracion.usuario', model: 'Usuario' }).exec(); //.populate('valoracion')
       if (!usuario) {
         return res.status(404).json({
           ok: false,
