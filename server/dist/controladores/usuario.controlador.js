@@ -233,13 +233,13 @@ class usuarioControlador {
     ;
     getValoraciones(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            const usuarioId = req.params.id;
             try {
-                const usuarioId = req.usuario._id;
                 const usuario = yield usuario_1.Usuario.findById(usuarioId).populate('valoracion').exec();
                 if (!usuario) {
                     return res.status(404).json({
                         ok: false,
-                        mensaje: 'Usuario no encontrado',
+                        mensaje: 'Usuario no encontrado'
                     });
                 }
                 res.json({

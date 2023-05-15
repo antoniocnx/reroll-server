@@ -10,7 +10,7 @@ usuarioRutas.post('/update', verificaToken, usuarioControlador.prototype.update)
 usuarioRutas.post('/login', usuarioControlador.prototype.login);
 usuarioRutas.get('/favoritos', verificaToken, usuarioControlador.prototype.getFavoritos);
 usuarioRutas.post('/favoritos/:articuloId', verificaToken, usuarioControlador.prototype.marcarFavorito);
-usuarioRutas.get('/valoraciones', verificaToken, usuarioControlador.prototype.getValoraciones);
-usuarioRutas.post('/:idUsuario/valoraciones', verificaToken, usuarioControlador.prototype.valorar);
+usuarioRutas.get('/valoraciones/:id', usuarioControlador.prototype.getValoraciones);
+usuarioRutas.post('/:idUsuario/valoracion', verificaToken, usuarioControlador.prototype.valorar);
 
 export default usuarioRutas;
