@@ -18,6 +18,30 @@ class usuarioControlador {
 
   };
 
+  async getById(req: any, res: Response) {
+    const usuarioId = req.params.id;
+
+    try {
+      const usuario = await Usuario.findById(usuarioId);
+      if (!usuario) {
+        return res.status(404).json({
+          ok: false,
+          mensaje: 'Usuario no encontrado'
+        });
+      }
+      res.json({
+        ok: true,
+        usuario
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        ok: false,
+        mensaje: 'Error al obtener el usuario',
+        error: error.message
+      });
+    }
+  }
+
   create(req: Request, res: Response) {
     const user = {
       nombre: req.body.nombre,
