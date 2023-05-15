@@ -26,31 +26,28 @@ class usuarioControlador {
         });
     }
     ;
-    getById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const usuarioId = req.params.id;
-            try {
-                const usuario = yield usuario_1.Usuario.findById(usuarioId);
-                if (!usuario) {
-                    return res.status(404).json({
-                        ok: false,
-                        mensaje: 'Usuario no encontrado'
-                    });
-                }
-                res.json({
-                    ok: true,
-                    usuario
-                });
-            }
-            catch (error) {
-                res.status(500).json({
-                    ok: false,
-                    mensaje: 'Error al obtener el usuario',
-                    error: error.message
-                });
-            }
-        });
-    }
+    // async getById(req: any, res: Response) {
+    //   const usuarioId = req.params.id;
+    //   try {
+    //     const usuario = await Usuario.findById(usuarioId);
+    //     if (!usuario) {
+    //       return res.status(404).json({
+    //         ok: false,
+    //         mensaje: 'Usuario no encontrado'
+    //       });
+    //     }
+    //     res.json({
+    //       ok: true,
+    //       usuario
+    //     });
+    //   } catch (error: any) {
+    //     res.status(500).json({
+    //       ok: false,
+    //       mensaje: 'Error al obtener el usuario',
+    //       error: error.message
+    //     });
+    //   }
+    // }
     create(req, res) {
         const user = {
             nombre: req.body.nombre,
@@ -260,7 +257,7 @@ class usuarioControlador {
         return __awaiter(this, void 0, void 0, function* () {
             const usuarioId = req.params.id;
             try {
-                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate({ path: 'valoracion.usuario', model: 'Usuario' }).exec(); //.populate('valoracion')
+                const usuario = yield usuario_1.Usuario.findById(usuarioId).populate({ path: 'valoracion.usuario', model: 'Usuario' }).exec();
                 if (!usuario) {
                     return res.status(404).json({
                         ok: false,
