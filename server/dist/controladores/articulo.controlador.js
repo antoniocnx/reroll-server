@@ -130,7 +130,7 @@ class articuloControlador {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             const userId = req.usuario._id;
-            const { nombre, precio, categoria, descripcion, localizacion, estado, envio, favorito, galeria } = req.body;
+            const { nombre, precio, categoria, descripcion, localizacion, estado, envio, galeria } = req.body;
             try {
                 const articulo = yield articulo_1.Articulo.findById(id);
                 if (!articulo) {
@@ -159,8 +159,6 @@ class articuloControlador {
                     articulo.estado = estado;
                 if (envio)
                     articulo.envio = envio;
-                if (favorito)
-                    articulo.favorito = favorito;
                 if (galeria)
                     articulo.galeria = galeria;
                 const articuloActualizado = yield articulo.save();

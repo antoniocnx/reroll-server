@@ -35,10 +35,6 @@ const articuloSchema = new mongoose_1.Schema({
     envio: {
         type: String
     },
-    // Favorito
-    favorito: {
-        type: Boolean
-    },
     // Imágenes
     galeria: [{
             type: String

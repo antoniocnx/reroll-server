@@ -138,7 +138,7 @@ class articuloControlador {
   async update(req: any, res: Response) {
     const id = req.params.id;
     const userId = req.usuario._id;
-    const { nombre, precio, categoria, descripcion, localizacion, estado, envio, favorito, galeria } = req.body;
+    const { nombre, precio, categoria, descripcion, localizacion, estado, envio, galeria } = req.body;
   
     try {
       const articulo = await Articulo.findById(id);
@@ -164,7 +164,6 @@ class articuloControlador {
       if (localizacion) articulo.localizacion = localizacion;
       if (estado) articulo.estado = estado;
       if (envio) articulo.envio = envio;
-      if (favorito) articulo.favorito = favorito;
       if (galeria) articulo.galeria = galeria;
   
       const articuloActualizado = await articulo.save();

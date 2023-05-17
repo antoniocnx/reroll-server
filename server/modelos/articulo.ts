@@ -34,10 +34,6 @@ const articuloSchema = new Schema({
     envio: {
         type: String
     },
-    // Favorito
-    favorito: {
-        type: Boolean
-    },
     // Imágenes
     galeria: [{
         type: String
@@ -65,7 +61,6 @@ interface IArticulo extends Document {
     localizacion: string;
     estado: string;
     envio: string;
-    favorito: boolean;
     galeria: string[];
     usuario: string;
 }
