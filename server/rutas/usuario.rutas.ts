@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import usuarioControlador from "../controladores/usuario.controlador";
 import { verificaToken } from "../middlewares/autenticacion";
 

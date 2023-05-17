@@ -11,6 +11,7 @@ const usuario_rutas_1 = __importDefault(require("./rutas/usuario.rutas"));
 const articulo_rutas_1 = __importDefault(require("./rutas/articulo.rutas"));
 const administrador_rutas_1 = __importDefault(require("./rutas/administrador.rutas"));
 const chat_rutas_1 = __importDefault(require("./rutas/chat.rutas"));
+const reporte_rutas_1 = __importDefault(require("./rutas/reporte.rutas"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const express_1 = __importDefault(require("express"));
 const servidor = new server_1.Server();
@@ -31,6 +32,7 @@ servidor.app.use('/usuario', usuario_rutas_1.default);
 servidor.app.use('/administrador', administrador_rutas_1.default);
 servidor.app.use('/articulo', articulo_rutas_1.default);
 servidor.app.use('/chats', chat_rutas_1.default);
+servidor.app.use('/reporte', reporte_rutas_1.default);
 //Conexión a la base de datos
 mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {
     if (err) {
