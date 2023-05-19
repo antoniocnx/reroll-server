@@ -178,17 +178,30 @@ class articuloControlador {
         });
     }
     ;
-    // Elimnar post
+    // Solo el usuario creador puede eliminar el artículo
+    // async delete(req: any, res: Response) {
+    //   const articuloId = req.params.articulo_id;
+    //   const usuarioId = req.usuario._id;
+    //   try {
+    //     const articulo = await Articulo.findOne({ _id: articuloId, usuario: usuarioId });
+    //     if (!articulo) {
+    //       return res.status(404).json({ success: false, error: 'No se encontró el artículo' });
+    //     }
+    //     await articulo.remove();
+    //     res.json({ success: true, message: 'Artículo eliminado correctamente' });
+    //   } catch (error: any) {
+    //     res.status(500).json({ success: false, error: error.message });
+    //   }
+    // }
+    // Cualquiera puede eliminar el artículo
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const articuloId = req.params.articulo_id;
-            const usuarioId = req.usuario._id;
             try {
-                const articulo = yield articulo_1.Articulo.findOne({ _id: articuloId, usuario: usuarioId });
+                const articulo = yield articulo_1.Articulo.findOneAndDelete({ _id: articuloId });
                 if (!articulo) {
                     return res.status(404).json({ success: false, error: 'No se encontró el artículo' });
                 }
-                yield articulo.remove();
                 res.json({ success: true, message: 'Artículo eliminado correctamente' });
             }
             catch (error) {
