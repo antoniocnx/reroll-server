@@ -2,9 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const reporte_1 = require("../modelos/reporte");
 class reporteControlador {
+    // getReportes(req: Request, res: Response) {
+    //   Reporte.find()
+    //     .populate('articulo')
+    //     .populate('usuario')
+    //     .exec((err, reportes) => {
+    //       if (err) {
+    //         return res.status(500).json({ error: 'Error al obtener los reportes' });
+    //       }
+    //       res.json(reportes);
+    //     });
+    // }
     getReportes(req, res) {
         reporte_1.Reporte.find()
-            .populate('articulo')
+            .populate({
+            path: 'articulo',
+            populate: {
+                path: 'usuario'
+            }
+        })
             .populate('usuario')
             .exec((err, reportes) => {
             if (err) {
