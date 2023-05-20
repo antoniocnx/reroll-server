@@ -18,6 +18,20 @@ const token_1 = __importDefault(require("../clases/token"));
 const articulo_1 = require("../modelos/articulo");
 // import { Direccion } from "../interfaces/direccion";
 class usuarioControlador {
+    // Obtener todos los usuarios
+    getUsuarios(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const usuarios = yield usuario_1.Usuario.find();
+                res.json(usuarios);
+            }
+            catch (error) {
+                res.status(500).json({ error: 'Error al obtener los usuarios' });
+            }
+        });
+    }
+    ;
+    // Obtener un usuario
     get(req, res) {
         const usuario = req.usuario;
         res.json({

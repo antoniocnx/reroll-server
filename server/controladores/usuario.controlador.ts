@@ -7,6 +7,17 @@ import { Articulo } from "../modelos/articulo";
 
 class usuarioControlador {
 
+  // Obtener todos los usuarios
+  async getUsuarios(req: Request, res: Response) {
+    try {
+      const usuarios = await Usuario.find();
+      res.json(usuarios);
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener los usuarios' });
+    }
+  };
+  
+  // Obtener un usuario
   get(req: any, res: Response) {
 
     const usuario = req.usuario;

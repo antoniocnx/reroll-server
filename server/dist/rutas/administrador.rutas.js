@@ -7,6 +7,7 @@ const express_1 = require("express");
 const administrador_controlador_1 = __importDefault(require("../controladores/administrador.controlador"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const administradorRutas = (0, express_1.Router)();
+administradorRutas.get('', administrador_controlador_1.default.prototype.getAdmins);
 administradorRutas.get('/get', autenticacion_1.verificaTokenAdmin, administrador_controlador_1.default.prototype.get);
 administradorRutas.post('/create', administrador_controlador_1.default.prototype.create);
 administradorRutas.post('/update', autenticacion_1.verificaTokenAdmin, administrador_controlador_1.default.prototype.update);

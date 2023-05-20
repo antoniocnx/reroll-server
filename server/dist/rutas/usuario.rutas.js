@@ -7,6 +7,7 @@ const express_1 = require("express");
 const usuario_controlador_1 = __importDefault(require("../controladores/usuario.controlador"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const usuarioRutas = (0, express_1.Router)();
+usuarioRutas.get('', usuario_controlador_1.default.prototype.getUsuarios);
 usuarioRutas.get('/get', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.get);
 // usuarioRutas.get('/:id', usuarioControlador.prototype.getById);
 usuarioRutas.post('/create', usuario_controlador_1.default.prototype.create);

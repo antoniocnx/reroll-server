@@ -4,6 +4,7 @@ import { verificaToken } from "../middlewares/autenticacion";
 
 const usuarioRutas = Router();
 
+usuarioRutas.get('', usuarioControlador.prototype.getUsuarios);
 usuarioRutas.get('/get', verificaToken, usuarioControlador.prototype.get);
 // usuarioRutas.get('/:id', usuarioControlador.prototype.getById);
 usuarioRutas.post('/create', usuarioControlador.prototype.create);
