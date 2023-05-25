@@ -9,5 +9,6 @@ administradorRutas.get('/get', verificaTokenAdmin, administradorControlador.prot
 administradorRutas.post('/create', administradorControlador.prototype.create);
 administradorRutas.post('/update', verificaTokenAdmin, administradorControlador.prototype.update);
 administradorRutas.post('/login', administradorControlador.prototype.login);
+administradorRutas.delete('', verificaTokenAdmin, administradorControlador.prototype.delete);
 
 export default administradorRutas;

@@ -168,6 +168,23 @@ class administradorControlador {
         });
     }
     ;
+    delete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const adminId = req.admin._id;
+                // Buscar y eliminar el admin por su ID
+                const adminEliminado = yield administrador_1.Administrador.findByIdAndDelete(adminId);
+                if (!adminEliminado) {
+                    return res.status(404).json({ mensaje: 'Administrador no encontrado' });
+                }
+                return res.status(200).json({ mensaje: 'Administrador eliminado exitosamente' });
+            }
+            catch (error) {
+                console.error(error);
+                return res.status(500).json({ mensaje: 'Error al eliminar el administrador' });
+            }
+        });
+    }
 }
 exports.default = administradorControlador;
 //# sourceMappingURL=administrador.controlador.js.map

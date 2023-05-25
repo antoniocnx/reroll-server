@@ -12,5 +12,6 @@ administradorRutas.get('/get', autenticacion_1.verificaTokenAdmin, administrador
 administradorRutas.post('/create', administrador_controlador_1.default.prototype.create);
 administradorRutas.post('/update', autenticacion_1.verificaTokenAdmin, administrador_controlador_1.default.prototype.update);
 administradorRutas.post('/login', administrador_controlador_1.default.prototype.login);
+administradorRutas.delete('', autenticacion_1.verificaTokenAdmin, administrador_controlador_1.default.prototype.delete);
 exports.default = administradorRutas;
 //# sourceMappingURL=administrador.rutas.js.map
