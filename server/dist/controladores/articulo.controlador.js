@@ -153,8 +153,6 @@ class articuloControlador {
                     articulo.categoria = categoria;
                 if (descripcion)
                     articulo.descripcion = descripcion;
-                if (localizacion)
-                    articulo.localizacion = localizacion;
                 if (estado)
                     articulo.estado = estado;
                 if (envio)

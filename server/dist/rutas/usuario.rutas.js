@@ -13,6 +13,7 @@ usuarioRutas.get('/get', autenticacion_1.verificaToken, usuario_controlador_1.de
 usuarioRutas.post('/create', usuario_controlador_1.default.prototype.create);
 usuarioRutas.post('/update', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.update);
 usuarioRutas.post('/login', usuario_controlador_1.default.prototype.login);
+usuarioRutas.delete('', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.delete);
 usuarioRutas.get('/favoritos', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.getFavoritos);
 usuarioRutas.post('/favoritos/:articuloId', autenticacion_1.verificaToken, usuario_controlador_1.default.prototype.marcarFavorito);
 usuarioRutas.get('/valoraciones/:id', usuario_controlador_1.default.prototype.getValoraciones);

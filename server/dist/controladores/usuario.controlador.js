@@ -336,6 +336,23 @@ class usuarioControlador {
         });
     }
     ;
+    delete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const usuarioId = req.usuario._id;
+                // Buscar y eliminar el usuario por su ID
+                const usuarioEliminado = yield usuario_1.Usuario.findByIdAndDelete(usuarioId);
+                if (!usuarioEliminado) {
+                    return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+                }
+                return res.status(200).json({ mensaje: 'Usuario eliminado exitosamente' });
+            }
+            catch (error) {
+                console.error(error);
+                return res.status(500).json({ mensaje: 'Error al eliminar el usuario' });
+            }
+        });
+    }
 }
 exports.default = usuarioControlador;
 //# sourceMappingURL=usuario.controlador.js.map

@@ -22,10 +22,6 @@ const articuloSchema = new Schema({
     descripcion: {
         type: String
     },
-    // Localización
-    localizacion: {
-        type: String   // -13.313123, 12.3123123
-    },
     // Estado de disponibilidad: Disponible, Reservado y Vendido
     estado: {
         type: String
@@ -58,7 +54,6 @@ interface IArticulo extends Document {
     precio: Number;
     categoria: string;
     descripcion: string;
-    localizacion: string;
     estado: string;
     envio: string;
     galeria: string[];

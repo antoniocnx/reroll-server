@@ -10,6 +10,7 @@ usuarioRutas.get('/get', verificaToken, usuarioControlador.prototype.get);
 usuarioRutas.post('/create', usuarioControlador.prototype.create);
 usuarioRutas.post('/update', verificaToken, usuarioControlador.prototype.update);
 usuarioRutas.post('/login', usuarioControlador.prototype.login);
+usuarioRutas.delete('', verificaToken, usuarioControlador.prototype.delete);
 usuarioRutas.get('/favoritos', verificaToken, usuarioControlador.prototype.getFavoritos);
 usuarioRutas.post('/favoritos/:articuloId', verificaToken, usuarioControlador.prototype.marcarFavorito);
 usuarioRutas.get('/valoraciones/:id', usuarioControlador.prototype.getValoraciones);

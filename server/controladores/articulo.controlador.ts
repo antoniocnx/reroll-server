@@ -161,7 +161,6 @@ class articuloControlador {
       if (precio) articulo.precio = precio;
       if (categoria) articulo.categoria = categoria;
       if (descripcion) articulo.descripcion = descripcion;
-      if (localizacion) articulo.localizacion = localizacion;
       if (estado) articulo.estado = estado;
       if (envio) articulo.envio = envio;
       if (galeria) articulo.galeria = galeria;

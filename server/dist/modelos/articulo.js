@@ -23,10 +23,6 @@ const articuloSchema = new mongoose_1.Schema({
     descripcion: {
         type: String
     },
-    // Localización
-    localizacion: {
-        type: String // -13.313123, 12.3123123
-    },
     // Estado de disponibilidad: Disponible, Reservado y Vendido
     estado: {
         type: String
