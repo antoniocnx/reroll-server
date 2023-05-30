@@ -15,6 +15,8 @@ chatRutas.post('/:userId', autenticacion_1.verificaToken, chat_controlador_1.def
 chatRutas.get('/:chatId/mensajes', chat_controlador_1.default.prototype.getMensajes);
 // Enviar un mensaje en un chat existente
 chatRutas.post('/:chatId/msg', autenticacion_1.verificaToken, chat_controlador_1.default.prototype.enviarMensaje);
+// Obtener la información de un chat
+chatRutas.get('/:chatId/info', chat_controlador_1.default.prototype.getChatInfo);
 // Eliminar un chat
 // chatRutas.delete('/:chatId', chatControlador.prototype.deleteChat);
 exports.default = chatRutas;

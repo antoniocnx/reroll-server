@@ -16,6 +16,9 @@ chatRutas.get('/:chatId/mensajes', chatControlador.prototype.getMensajes);
 // Enviar un mensaje en un chat existente
 chatRutas.post('/:chatId/msg', verificaToken, chatControlador.prototype.enviarMensaje);
 
+// Obtener la información de un chat
+chatRutas.get('/:chatId/info', chatControlador.prototype.getChatInfo);
+
 // Eliminar un chat
 // chatRutas.delete('/:chatId', chatControlador.prototype.deleteChat);
 

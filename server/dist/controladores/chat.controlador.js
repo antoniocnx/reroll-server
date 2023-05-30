@@ -115,6 +115,33 @@ class chatControlador {
             }
         });
     }
+    // Obtener los datos de un chat
+    getChatInfo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const chatId = req.params.chatId;
+                // Verificar que el chat exista en la base de datos
+                const chat = yield chat_1.Chat.findById(chatId);
+                if (!chat) {
+                    return res.status(404).json({ mensaje: 'Chat no encontrado' });
+                }
+                // Obtener la información del chat
+                const chatInfo = {
+                    _id: chat._id,
+                    usuario1: chat.usuario1,
+                    usuario2: chat.usuario2,
+                    mensajes: chat.mensajes,
+                    fechaChat: chat.fechaChat
+                };
+                return res.json({ chat: chatInfo });
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).json({ mensaje: 'Error al obtener la información del chat' });
+            }
+        });
+    }
+    ;
 }
 exports.default = chatControlador;
 //# sourceMappingURL=chat.controlador.js.map
