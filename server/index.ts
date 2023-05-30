@@ -36,7 +36,7 @@ servidor.app.use(cors({
 servidor.app.use('/usuario', usuarioRutas);
 servidor.app.use('/administrador', administradorRutas);
 servidor.app.use('/articulo', articuloRutas);
-servidor.app.use('/chats', chatRutas);
+servidor.app.use('/chat', chatRutas);
 servidor.app.use('/reporte', reporteRutas);
 
 //Conexión a la base de datos

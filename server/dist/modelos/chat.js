@@ -26,10 +26,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Chat = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const chatSchema = new mongoose_1.default.Schema({
-    participantes: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: 'Usuario'
-        }],
+    usuario1: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'Usuario'
+    },
+    usuario2: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'Usuario'
+    },
     mensajes: [{
             usuario: {
                 type: mongoose_1.default.Schema.Types.ObjectId,
@@ -50,5 +54,4 @@ const chatSchema = new mongoose_1.default.Schema({
     }
 });
 exports.Chat = (0, mongoose_1.model)('Chat', chatSchema);
-// module.exports = mongoose.model('Chat', chatSchema);
 //# sourceMappingURL=chat.js.map

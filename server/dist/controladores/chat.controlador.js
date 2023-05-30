@@ -12,98 +12,109 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chat_1 = require("../modelos/chat");
 const usuario_1 = require("../modelos/usuario");
 class chatControlador {
-    // Obtener todos los chats del usuario con sus mensajes
+    // Obtener todos los chats de un usuario
     getChats(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const chats = yield chat_1.Chat.find({ participantes: req.params.userId })
-                    .populate('participantes', '_id nombre email')
-                    .populate('mensajes.usuario', '_id nombre email')
-                    .sort({ fechaChat: -1 })
-                    .exec();
-                res.json(chats);
+                const usuarioId = req.params.userId;
+                // Verificar que el usuario exista en la base de datos
+                const existUsuario = yield usuario_1.Usuario.exists({ _id: usuarioId });
+                if (!existUsuario) {
+                    return res.status(400).json({ mensaje: 'El usuario no existe' });
+                }
+                // Buscar todos los chats en los que el usuario sea participante
+                const chats = yield chat_1.Chat.find({
+                    $or: [{ usuario1: usuarioId }, { usuario2: usuarioId }],
+                }).populate('usuario1', 'nombre apellidos email avatar').populate('usuario2', 'nombre apellidos email avatar');
+                return res.json({ chats });
             }
             catch (error) {
                 console.error(error);
-                res.status(500).send('Error al obtener los chats');
+                res.status(500).json({ mensaje: 'Error al obtener los chats del usuario' });
             }
         });
     }
     ;
-    // Crear un nuevo chat con otro usuario
+    // Crear un nuevo chat entre dos usuarios
     createChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token1 = req.get('x-token');
-            const token2 = req.get('x-token-2');
-            // const user1 = await Usuario.findOne({ token: token1 });
-            // const user2 = await Usuario.findOne({ token: token2 });
-            const user1 = yield usuario_1.Usuario.findOne({ _id: 'token1' });
-            const user2 = yield usuario_1.Usuario.findOne({ _id: 'token2' });
-            if (!user1 || !user2) {
-                return res.status(400).json({ ok: false, mensaje: 'Usuarios no encontrados' });
-            }
-            if (user1._id.equals(user2._id)) {
-                return res.status(400).json({ ok: false, mensaje: 'Los usuarios deben ser diferentes', user1, user2 });
-            }
-            // Crear el chat y guardar en la base de datos
-            const nuevoChat = new chat_1.Chat({
-                participantes: [user1._id, user2._id],
-                mensajes: [],
-                fechaChat: Date.now()
-            });
-            if (req.body.mensajes) {
-                nuevoChat.mensajes.push(req.body.mensajes);
-            }
-            yield nuevoChat.save();
-            return res.json({ ok: true, mensaje: 'Chat creado exitosamente', nuevoChat });
-        });
-    }
-    ;
-    // Eliminar un chat
-    deleteChat(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
             try {
-                const chatEliminado = yield chat_1.Chat.findByIdAndDelete(req.params.chatId).exec();
-                if (!chatEliminado) {
-                    res.status(404).send('Chat no encontrado');
+                const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
+                const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+                // Verificar que los usuarios existan en la base de datos
+                const existUsuario1 = yield usuario_1.Usuario.exists({ _id: usuario1 });
+                const existUsuario2 = yield usuario_1.Usuario.exists({ _id: usuario2 });
+                if (!existUsuario1 || !existUsuario2) {
+                    return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
                 }
-                else {
-                    res.send('Chat eliminado correctamente');
-                }
+                // Crear el chat y guardar en la base de datos
+                const nuevoChat = new chat_1.Chat({
+                    usuario1,
+                    usuario2: usuario2,
+                    mensajes: [],
+                    fechaChat: Date.now()
+                });
+                yield nuevoChat.save();
+                return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
             }
             catch (error) {
                 console.error(error);
-                res.status(500).send('Error al eliminar el chat');
+                res.status(500).json({ mensaje: 'Error al crear el chat' });
             }
         });
     }
     ;
-    // Enviar un mensaje en un chat existente
+    // Agregar un nuevo mensaje a un chat específico
     enviarMensaje(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const mensaje = {
-                usuario: req.body.usuarioId,
-                texto: req.body.texto,
-            };
             try {
-                const chatActualizado = yield chat_1.Chat.findByIdAndUpdate(req.params.chatId, { $push: { mensajes: mensaje } }, { new: true })
-                    .populate('participantes', '_id nombre email')
-                    .populate('mensajes.usuario', '_id nombre email')
-                    .exec();
-                if (!chatActualizado) {
-                    res.status(404).send('Chat no encontrado');
+                const chatId = req.params.chatId;
+                const usuarioId = req.usuario._id; // ID del usuario autenticado obtenido del token
+                const texto = req.body.texto;
+                // Verificar que el chat exista en la base de datos
+                const chat = yield chat_1.Chat.findById(chatId);
+                if (!chat) {
+                    return res.status(404).json({ mensaje: 'Chat no encontrado' });
                 }
-                else {
-                    res.json(chatActualizado);
-                }
+                // Verificar que el usuario autenticado sea uno de los miembros del chat
+                // if (chat.usuario1 !== usuarioId && chat.usuario2 !== usuarioId) {
+                //   return res.status(403).json({ mensaje: 'No tienes permiso para enviar mensajes en este chat' });
+                // }
+                // Agregar el mensaje al chat
+                const mensaje = {
+                    usuario: usuarioId,
+                    texto: texto,
+                    fechaMsg: Date.now()
+                };
+                chat.mensajes.push(mensaje);
+                yield chat.save();
+                return res.json({ chat });
             }
             catch (error) {
                 console.error(error);
-                res.status(500).send('Error al enviar el mensaje');
+                res.status(500).json({ mensaje: 'Error al enviar el mensaje' });
             }
         });
     }
     ;
+    // Obtener todos los mensajes de un chat
+    getMensajes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const chatId = req.params.chatId;
+                // Verificar que el chat exista en la base de datos
+                const chat = yield chat_1.Chat.findById(chatId);
+                if (!chat) {
+                    return res.status(404).json({ mensaje: 'Chat no encontrado' });
+                }
+                return res.json({ mensajes: chat.mensajes });
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).json({ mensaje: 'Error al obtener los mensajes del chat' });
+            }
+        });
+    }
 }
 exports.default = chatControlador;
 //# sourceMappingURL=chat.controlador.js.map

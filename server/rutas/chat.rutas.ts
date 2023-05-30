@@ -4,20 +4,19 @@ import { verificaToken } from '../middlewares/autenticacion';
 
 const chatRutas = Router();
 
-// chatRutas.get('/get', verificaToken, chatControlador.prototype.get);
-// chatRutas.get('/:chatId', verificaToken, chatControlador.prototype.getChat);
-// chatRutas.post('/:chatId/mensaje', verificaToken, chatControlador.prototype.postMensaje);
-
 // Obtener todos los chats del usuario con sus mensajes
 chatRutas.get('/:userId', chatControlador.prototype.getChats);
 
 // Crear un nuevo chat con otro usuario
-chatRutas.post('/chat', verificaToken, chatControlador.prototype.createChat);
+chatRutas.post('/:userId', verificaToken, chatControlador.prototype.createChat);
 
-// Eliminar un chat
-chatRutas.delete('/:chatId', chatControlador.prototype.deleteChat);
+// Obtener todos los mensajes de un chat
+chatRutas.get('/:chatId/mensajes', chatControlador.prototype.getMensajes);
 
 // Enviar un mensaje en un chat existente
-chatRutas.post('/:chatId', chatControlador.prototype.enviarMensaje);
+chatRutas.post('/:chatId/msg', verificaToken, chatControlador.prototype.enviarMensaje);
+
+// Eliminar un chat
+// chatRutas.delete('/:chatId', chatControlador.prototype.deleteChat);
 
 export default chatRutas;

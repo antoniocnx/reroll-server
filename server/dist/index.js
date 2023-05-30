@@ -31,7 +31,7 @@ servidor.app.use((0, cors_1.default)({
 servidor.app.use('/usuario', usuario_rutas_1.default);
 servidor.app.use('/administrador', administrador_rutas_1.default);
 servidor.app.use('/articulo', articulo_rutas_1.default);
-servidor.app.use('/chats', chat_rutas_1.default);
+servidor.app.use('/chat', chat_rutas_1.default);
 servidor.app.use('/reporte', reporte_rutas_1.default);
 //Conexión a la base de datos
 mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mongodb.net/reroll?retryWrites=true&w=majority', (err) => {

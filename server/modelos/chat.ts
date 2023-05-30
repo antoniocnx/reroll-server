@@ -1,10 +1,14 @@
 import mongoose, { Schema, model, Document, Date } from "mongoose";
 
 const chatSchema = new mongoose.Schema({
-  participantes: [{
+  usuario1: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario'
-  }],
+  },
+  usuario2: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario'
+  },
   mensajes: [{
     usuario: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,15 +30,14 @@ const chatSchema = new mongoose.Schema({
 });
 
 export interface IChat extends Document {
-  participantes: string[];
+  usuario1: string;
+  usuario2: string;
   mensajes: [{
     usuario: string,
     texto: string,
-    fechaMsg: Date
+    fechaMsg: Number
   }];
   fechaChat: Date;
 }
 
 export const Chat = model<IChat>('Chat', chatSchema);
-
-// module.exports = mongoose.model('Chat', chatSchema);
