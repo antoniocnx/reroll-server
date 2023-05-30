@@ -41,8 +41,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class Server {
     constructor() {
-        this.port_app = parseInt(process.env.PORT_APP || '3300');
-        this.port_http = parseInt(process.env.PORT_HTTP || '4000');
+        this.port_app = parseInt(process.env.PORT || '3300');
+        this.port_http = parseInt(process.env.PORT || '4000');
         this.app = (0, express_1.default)();
         this.httpServer = (0, http_1.createServer)(this.app);
     }

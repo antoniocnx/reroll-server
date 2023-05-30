@@ -52,8 +52,8 @@ dotenv.config();
 
 export class Server {
   public app: express.Application;
-  public port_app: number = parseInt(process.env.PORT_APP || '3300');
-  public port_http: number = parseInt(process.env.PORT_HTTP || '4000');
+  public port_app: number = parseInt(process.env.PORT || '3300');
+  public port_http: number = parseInt(process.env.PORT || '4000');
   public httpServer: HttpServer;
   public io: SocketIOServer;
 
