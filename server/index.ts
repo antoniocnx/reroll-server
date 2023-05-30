@@ -48,8 +48,18 @@ mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mo
     }
 })
 
-// Levanta express
+// Levanta Express
+// servidor.start(() => {
+//     console.log('Servidor Express iniciado en el puerto ' + servidor.port);
+// });
+
+// Levanta Express
 servidor.start(() => {
-    console.log('Servidor iniciado en el puerto ' + servidor.port);
+    console.log('Servidor Express iniciado en el puerto ' + servidor.port_app);
+});
+
+// Levanta Socket.IO
+servidor.startSocket(() => {
+    console.log('Servidor Socket.IO conectado en el puerto ' + servidor.port_http);
 });
 
