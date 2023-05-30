@@ -48,21 +48,6 @@ mongoose.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.1asoedx.mo
     }
 })
 
-// Socket.io
-servidor.io.on('connect', (socket) => {
-    console.log(`Usuario conectado: ${socket.id}`);
-
-    // Manejo de eventos de socket.io
-    socket.on('evento', (data) => {
-        console.log(`Datos recibidos: ${data}`);
-    });
-
-    // Desconexión del usuario
-    socket.on('disconnect', () => {
-        console.log(`Usuario desconectado: ${socket.id}`);
-    });
-});
-
 // Levanta express
 servidor.start(() => {
     console.log('Servidor iniciado en el puerto ' + servidor.port);
