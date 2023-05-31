@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { IChat, Chat } from "../modelos/chat";
 import Token from '../clases/token';
 import { Usuario } from "../modelos/usuario";
+import { Articulo } from "../modelos/articulo";
 
 class chatControlador {
 
@@ -34,19 +35,27 @@ class chatControlador {
     try {
       const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
       const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+      const articulo = req.params.articuloId;
 
       // Verificar que los usuarios existan en la base de datos
       const existUsuario1 = await Usuario.exists({ _id: usuario1 });
       const existUsuario2 = await Usuario.exists({ _id: usuario2 });
 
+      const existArticulo = await Articulo.exists({ _id: articulo });
+
       if (!existUsuario1 || !existUsuario2) {
         return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+      }
+
+      if (!existArticulo) {
+        return res.status(400).json({ mensaje: 'Artículo no encontrado' });
       }
 
       // Crear el chat y guardar en la base de datos
       const nuevoChat = new Chat({
         usuario1,
         usuario2: usuario2,
+        articulo: articulo,
         mensajes: [],
         fechaChat: Date.now()
       });
@@ -144,6 +153,42 @@ class chatControlador {
     }
   };
 
+  // Comprueba que exista un chat entre dos usuarios por un artículo
+  async existeChat(req: Request, res: Response) {
+    try {
+      const articuloId = req.params.articuloId;
+      const usuario1Id = req.params.usuario1Id;
+      const usuario2Id = req.params.usuario2Id;
+
+      // Verificar que los usuarios existan en la base de datos
+      const existUsuario1 = await Usuario.exists({ _id: usuario1Id });
+      const existUsuario2 = await Usuario.exists({ _id: usuario2Id });
+
+      if (!existUsuario1 || !existUsuario2) {
+        return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+      }
+
+      const existArticulo = await Articulo.exists({ _id: articuloId });
+
+      if (!existArticulo) {
+        return res.status(400).json({ mensaje: 'Artículo no encontrado' });
+      }
+      
+      // Verificar si existe un chat que cumpla las condiciones
+      const existeChat = await Chat.exists({
+        $or: [
+          { usuario1: usuario1Id, usuario2: usuario2Id },
+          { usuario1: usuario2Id, usuario2: usuario1Id }
+        ],
+        articulo: articuloId
+      });
+
+      return res.json({ existeChat });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ mensaje: 'Error al verificar la existencia del chat' });
+    }
+  }
 
 }
 

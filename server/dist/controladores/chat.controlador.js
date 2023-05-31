@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const chat_1 = require("../modelos/chat");
 const usuario_1 = require("../modelos/usuario");
+const articulo_1 = require("../modelos/articulo");
 class chatControlador {
     // Obtener todos los chats de un usuario
     getChats(req, res) {
@@ -41,16 +42,22 @@ class chatControlador {
             try {
                 const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
                 const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+                const articulo = req.params.articuloId;
                 // Verificar que los usuarios existan en la base de datos
                 const existUsuario1 = yield usuario_1.Usuario.exists({ _id: usuario1 });
                 const existUsuario2 = yield usuario_1.Usuario.exists({ _id: usuario2 });
+                const existArticulo = yield articulo_1.Articulo.exists({ _id: articulo });
                 if (!existUsuario1 || !existUsuario2) {
                     return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+                }
+                if (!existArticulo) {
+                    return res.status(400).json({ mensaje: 'Artículo no encontrado' });
                 }
                 // Crear el chat y guardar en la base de datos
                 const nuevoChat = new chat_1.Chat({
                     usuario1,
                     usuario2: usuario2,
+                    articulo: articulo,
                     mensajes: [],
                     fechaChat: Date.now()
                 });
@@ -142,6 +149,39 @@ class chatControlador {
         });
     }
     ;
+    // Comprueba que exista un chat entre dos usuarios por un artículo
+    existeChat(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const articuloId = req.params.articuloId;
+                const usuario1Id = req.params.usuario1Id;
+                const usuario2Id = req.params.usuario2Id;
+                // Verificar que los usuarios existan en la base de datos
+                const existUsuario1 = yield usuario_1.Usuario.exists({ _id: usuario1Id });
+                const existUsuario2 = yield usuario_1.Usuario.exists({ _id: usuario2Id });
+                if (!existUsuario1 || !existUsuario2) {
+                    return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+                }
+                const existArticulo = yield articulo_1.Articulo.exists({ _id: articuloId });
+                if (!existArticulo) {
+                    return res.status(400).json({ mensaje: 'Artículo no encontrado' });
+                }
+                // Verificar si existe un chat que cumpla las condiciones
+                const existeChat = yield chat_1.Chat.exists({
+                    $or: [
+                        { usuario1: usuario1Id, usuario2: usuario2Id },
+                        { usuario1: usuario2Id, usuario2: usuario1Id }
+                    ],
+                    articulo: articuloId
+                });
+                return res.json({ existeChat });
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).json({ mensaje: 'Error al verificar la existencia del chat' });
+            }
+        });
+    }
 }
 exports.default = chatControlador;
 //# sourceMappingURL=chat.controlador.js.map
