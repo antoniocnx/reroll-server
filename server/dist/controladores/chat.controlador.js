@@ -137,6 +137,7 @@ class chatControlador {
                     _id: chat._id,
                     usuario1: chat.usuario1,
                     usuario2: chat.usuario2,
+                    articulo: chat.articulo,
                     mensajes: chat.mensajes,
                     fechaChat: chat.fechaChat
                 };
