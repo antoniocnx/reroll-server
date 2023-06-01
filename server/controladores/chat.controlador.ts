@@ -21,7 +21,7 @@ class chatControlador {
       // Buscar todos los chats en los que el usuario sea participante
       const chats = await Chat.find({
         $or: [{ usuario1: usuarioId }, { usuario2: usuarioId }],
-      }).populate('usuario1', 'nombre apellidos email avatar').populate('usuario2', 'nombre apellidos email avatar');
+      }).populate('usuario1', 'nombre apellidos email avatar').populate('usuario2', 'nombre apellidos email avatar').populate('articulo');
 
       return res.json({ chats });
     } catch (error) {
