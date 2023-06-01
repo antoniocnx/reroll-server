@@ -68,36 +68,6 @@ class chatControlador {
     //   }
     // };
     // Crear un nuevo chat entre dos usuarios
-    // async createChat(req: any, res: Response) {
-    //   try {
-    //     const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
-    //     const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
-    //     const articulo = req.params.articuloId;
-    //     // Verificar que los usuarios existan en la base de datos
-    //     const existUsuario1 = await Usuario.findById(usuario1);
-    //     const existUsuario2 = await Usuario.findById(usuario2);
-    //     const existArticulo = await Articulo.findById(articulo);
-    //     if (!existUsuario1 || !existUsuario2) {
-    //       return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
-    //     }
-    //     if (!existArticulo) {
-    //       return res.status(400).json({ mensaje: 'Artículo no encontrado' });
-    //     }
-    //     // Crear el chat y guardar en la base de datos
-    //     const nuevoChat = new Chat({
-    //       usuario1: existUsuario1,
-    //       usuario2: existUsuario2,
-    //       articulo: existArticulo,
-    //       mensajes: [],
-    //       fechaChat: Date.now()
-    //     });
-    //     await nuevoChat.save();
-    //     return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ mensaje: 'Error al crear el chat' });
-    //   }
-    // };
     createChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -115,19 +85,17 @@ class chatControlador {
                     return res.status(400).json({ mensaje: 'Artículo no encontrado' });
                 }
                 // Crear el chat y guardar en la base de datos
-                const nuevoChat = {
+                const nuevoChat = new chat_1.Chat({
                     usuario1: existUsuario1,
                     usuario2: existUsuario2,
                     articulo: existArticulo,
                     mensajes: [],
                     fechaChat: Date.now()
-                };
-                chat_1.Chat.create(nuevoChat).then((chat) => __awaiter(this, void 0, void 0, function* () {
-                    yield chat.populate('usuario1 usuario2 articulo');
-                    res.json({ chat });
-                }));
-                // await nuevoChat.save();
-                // return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
+                });
+                // Cargar los documentos completos del artículo y de los usuarios
+                yield nuevoChat.populate('usuario1 usuario2 articulo');
+                yield nuevoChat.save();
+                return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
             }
             catch (error) {
                 console.error(error);
@@ -136,6 +104,39 @@ class chatControlador {
         });
     }
     ;
+    // FUNCIONA
+    // async createChat(req: any, res: Response) {
+    //   try {
+    //     const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
+    //     const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+    //     const articulo = req.params.articuloId;
+    //     // Verificar que los usuarios existan en la base de datos
+    //     const existUsuario1 = await Usuario.findById(usuario1);
+    //     const existUsuario2 = await Usuario.findById(usuario2);
+    //     const existArticulo = await Articulo.findById(articulo);
+    //     if (!existUsuario1 || !existUsuario2) {
+    //       return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+    //     }
+    //     if (!existArticulo) {
+    //       return res.status(400).json({ mensaje: 'Artículo no encontrado' });
+    //     }
+    //     // Crear el chat y guardar en la base de datos
+    //     const nuevoChat = {
+    //       usuario1: existUsuario1,
+    //       usuario2: existUsuario2,
+    //       articulo: existArticulo,
+    //       mensajes: [],
+    //       fechaChat: Date.now()
+    //     };
+    //     Chat.create(nuevoChat).then(async (chat) => {
+    //       await chat.populate('usuario1 usuario2 articulo');
+    //       res.json({ chat })
+    //     })
+    //   } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ mensaje: 'Error al crear el chat' });
+    //   }
+    // };
     // Agregar un nuevo mensaje a un chat específico
     enviarMensaje(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -193,20 +194,14 @@ class chatControlador {
             try {
                 const chatId = req.params.chatId;
                 // Verificar que el chat exista en la base de datos
-                const chat = yield chat_1.Chat.findById(chatId);
+                const chat = yield chat_1.Chat.findById(chatId)
+                    .populate('usuario1')
+                    .populate('usuario2')
+                    .populate('articulo');
                 if (!chat) {
                     return res.status(404).json({ mensaje: 'Chat no encontrado' });
                 }
-                // Obtener la información del chat
-                const chatInfo = {
-                    _id: chat._id,
-                    usuario1: chat.usuario1,
-                    usuario2: chat.usuario2,
-                    articulo: chat.articulo,
-                    mensajes: chat.mensajes,
-                    fechaChat: chat.fechaChat
-                };
-                return res.json({ chat: chatInfo });
+                return res.json({ chat });
             }
             catch (error) {
                 console.error(error);
@@ -214,7 +209,6 @@ class chatControlador {
             }
         });
     }
-    ;
     // Comprueba que exista un chat entre dos usuarios por un artículo
     existeChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
