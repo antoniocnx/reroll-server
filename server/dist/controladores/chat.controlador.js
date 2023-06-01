@@ -44,9 +44,9 @@ class chatControlador {
                 const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
                 const articulo = req.params.articuloId;
                 // Verificar que los usuarios existan en la base de datos
-                const existUsuario1 = yield usuario_1.Usuario.exists({ _id: usuario1 });
-                const existUsuario2 = yield usuario_1.Usuario.exists({ _id: usuario2 });
-                const existArticulo = yield articulo_1.Articulo.exists({ _id: articulo });
+                const existUsuario1 = yield usuario_1.Usuario.findById(usuario1);
+                const existUsuario2 = yield usuario_1.Usuario.findById(usuario2);
+                const existArticulo = yield articulo_1.Articulo.findById(articulo);
                 if (!existUsuario1 || !existUsuario2) {
                     return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
                 }
@@ -55,9 +55,9 @@ class chatControlador {
                 }
                 // Crear el chat y guardar en la base de datos
                 const nuevoChat = new chat_1.Chat({
-                    usuario1,
-                    usuario2: usuario2,
-                    articulo: articulo,
+                    usuario1: existUsuario1,
+                    usuario2: existUsuario2,
+                    articulo: existArticulo,
                     mensajes: [],
                     fechaChat: Date.now()
                 });
