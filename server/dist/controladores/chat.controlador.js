@@ -36,7 +36,68 @@ class chatControlador {
         });
     }
     ;
+    // ORIGINAL Crear un nuevo chat entre dos usuarios
+    // async createChat(req: any, res: Response) {
+    //   try {
+    //     const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
+    //     const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+    //     const articulo = req.params.articuloId;
+    //     // Verificar que los usuarios existan en la base de datos
+    //     const existUsuario1 = await Usuario.findById(usuario1);
+    //     const existUsuario2 = await Usuario.findById(usuario2);
+    //     const existArticulo = await Articulo.findById(articulo);
+    //     if (!existUsuario1 || !existUsuario2) {
+    //       return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+    //     }
+    //     if (!existArticulo) {
+    //       return res.status(400).json({ mensaje: 'Artículo no encontrado' });
+    //     }
+    //     // Crear el chat y guardar en la base de datos
+    //     const nuevoChat = new Chat({
+    //       usuario1: existUsuario1,
+    //       usuario2: existUsuario2,
+    //       articulo: existArticulo,
+    //       mensajes: [],
+    //       fechaChat: Date.now()
+    //     });
+    //     await nuevoChat.save();
+    //     return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
+    //   } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ mensaje: 'Error al crear el chat' });
+    //   }
+    // };
     // Crear un nuevo chat entre dos usuarios
+    // async createChat(req: any, res: Response) {
+    //   try {
+    //     const usuario1 = req.usuario._id; // ID del usuario 1 obtenido del middleware
+    //     const usuario2 = req.params.userId; // ID del usuario 2 obtenido por parámetro
+    //     const articulo = req.params.articuloId;
+    //     // Verificar que los usuarios existan en la base de datos
+    //     const existUsuario1 = await Usuario.findById(usuario1);
+    //     const existUsuario2 = await Usuario.findById(usuario2);
+    //     const existArticulo = await Articulo.findById(articulo);
+    //     if (!existUsuario1 || !existUsuario2) {
+    //       return res.status(400).json({ mensaje: 'Usuarios no encontrados' });
+    //     }
+    //     if (!existArticulo) {
+    //       return res.status(400).json({ mensaje: 'Artículo no encontrado' });
+    //     }
+    //     // Crear el chat y guardar en la base de datos
+    //     const nuevoChat = new Chat({
+    //       usuario1: existUsuario1,
+    //       usuario2: existUsuario2,
+    //       articulo: existArticulo,
+    //       mensajes: [],
+    //       fechaChat: Date.now()
+    //     });
+    //     await nuevoChat.save();
+    //     return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
+    //   } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ mensaje: 'Error al crear el chat' });
+    //   }
+    // };
     createChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -54,15 +115,19 @@ class chatControlador {
                     return res.status(400).json({ mensaje: 'Artículo no encontrado' });
                 }
                 // Crear el chat y guardar en la base de datos
-                const nuevoChat = new chat_1.Chat({
+                const nuevoChat = {
                     usuario1: existUsuario1,
                     usuario2: existUsuario2,
                     articulo: existArticulo,
                     mensajes: [],
                     fechaChat: Date.now()
-                });
-                yield nuevoChat.save();
-                return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
+                };
+                chat_1.Chat.create(nuevoChat).then((chat) => __awaiter(this, void 0, void 0, function* () {
+                    yield chat.populate('usuario1 usuario2 articulo');
+                    res.json({ chat });
+                }));
+                // await nuevoChat.save();
+                // return res.json({ mensaje: 'Chat creado exitosamente', chat: nuevoChat });
             }
             catch (error) {
                 console.error(error);
