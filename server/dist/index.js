@@ -39,6 +39,9 @@ mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.
         throw err;
     }
     else {
+        useNewUrlParser: true;
+        useUnifiedTopology: true;
+        useCreateIndex: true;
         console.log("Base de Datos ONLINE");
     }
 });
@@ -46,12 +49,4 @@ mongoose_1.default.connect('mongodb+srv://antoniocn:1N50mw4XolmsO4C8@clustertfg.
 servidor.start(() => {
     console.log('Servidor Express iniciado en el puerto ' + servidor.port);
 });
-// Levanta Express
-// servidor.start(() => {
-//     console.log('Servidor Express iniciado en el puerto ' + servidor.port_app);
-// });
-// Levanta Socket.IO
-// servidor.startSocket(() => {
-//     console.log('Servidor Socket.IO conectado en el puerto ' + servidor.port_http);
-// });
 //# sourceMappingURL=index.js.map

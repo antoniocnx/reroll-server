@@ -4,18 +4,6 @@ import { IReporte, Reporte } from '../modelos/reporte';
 
 class reporteControlador {
 
-  // getReportes(req: Request, res: Response) {
-  //   Reporte.find()
-  //     .populate('articulo')
-  //     .populate('usuario')
-  //     .exec((err, reportes) => {
-  //       if (err) {
-  //         return res.status(500).json({ error: 'Error al obtener los reportes' });
-  //       }
-  //       res.json(reportes);
-  //     });
-  // }
-
   getReportes(req: Request, res: Response) {
     Reporte.find()
       .populate({
